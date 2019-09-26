@@ -6,7 +6,7 @@
 
 ## 1. 코스 소개
 
-- MOOC Offered by : [Udacity](https://www.udacity.com/) : [Course Link](https://www.udacity.com/course/responsive-web-design-fundamentals--ud893)
+- MOOC Offered by : [Udacity](https://www.udacity.com/) - [Course Link](https://www.udacity.com/course/responsive-web-design-fundamentals--ud893)
 - Couse Director : Google
 - Course Fee :   💵🙅‍♀️ Free 
 - Level : Intermediate
