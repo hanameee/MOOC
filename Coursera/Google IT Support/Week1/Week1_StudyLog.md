@@ -33,3 +33,56 @@ We are going to cover ...
 - Take a look at the Internet and get a better understanding of how computers talk to each other.
 -  How applications and programs tie all of this together, and let humans interact with these systems
 -  Important lessons on problem-solving with computers
+
+
+
+# 2. History of Computing
+
+###2-1) From Abacus to Analytical Engine
+
+`Computer` is a device that stores and processes data by performing calculations.        
+
+By the end of this lesson ...
+
+- you'll be able to identify some of the most major advances in the early history of computers. 
+
+`Abacus (주판)`
+컴퓨터의 가장 초기 형태로 500BC에 큰 숫자들을 계산하기 위해 발명됨.
+
+`Mechanical calculator by Blaise Pascal`
+17세기에 발명됨. 기어와 레버들을 이용해 자동으로 덧셈,뺄셈,곱셈,나눗셈 수행
+
+`Analytical engine by Charles Babbage`
+difference engine : mechanical calculator의 sophisticated ver.
+Analytical engine : Punch card 를 활용해 difference engine 에서 원하는 수식을 pre-define 할 수 있도록 발전시킴.
+
+*Punch cards : first binary system used for machines (for designing pattern on the fabric) - hole이 있으면 thread, 없으면 didn't thread
+
+`Ada Lovelace` : machine이 비단 계산 외에 더 많은 일을 할 수 있다고 알아본 사람! Engine 을 위한 Algoritm을 처음 발명함.
+
+Algorithm : a series of steps that solves specific problems.
+
+= very first general purpose computing machine in history
+
+### 2-2) Path to Modern Computers
+
+World War 2가 되어서야 정부가 computing research에 돈을 퍼붓기 시작했다.
+특히 Cryptography!
+`Alan Turing`
+Enigma machine... 암호 해독하기 위해 등등, 정부가 computation의 가능성을 알아보기 시작.
+
+World War 2 이후, 20세기부터 기업들로부터 기술적 발전이 이뤄짐.
+
+[New methods to store data in computers]
+1950년까지만해도 punch cards가 데이터 저장을 저장하는 방식이었음.
+1970,80년대부터는 Magnetic tape 등이 나오며 더 많은 데이터를 더 reliable한 매체에 저장할 수 있게 되었음. 
+
+debugging = literally debugging :) (오류 나던게 ㄹㅇ 나방때문이었음)
+
+`ENIAC` : one of the earliest forms of general purpose computers. 어마어마하게 컸다.
+
+곧 전기전압을 컨트롤하기 위해 transistor를 사용하게 됨! Vacuum tubes와 거의 똑같은 기능을 수행하지만 더 작고 더 효율적임. 오늘날엔 작은 컴퓨터에 billions의 transistors 를 가질 수 있다.
+
+`First Compiler by Admiral Grace Hopper` :  programming language (human readable) to machine code (binary) 
+
+`Xerox Alto`  , `apple` , `IBM`- Personal computer.
