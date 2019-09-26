@@ -85,4 +85,52 @@ debugging = literally debugging :) (오류 나던게 ㄹㅇ 나방때문이었�
 
 `First Compiler by Admiral Grace Hopper` :  programming language (human readable) to machine code (binary) 
 
-`Xerox Alto`  , `apple` , `IBM`- Personal computer.
+`Xerox Alto`  , `apple` , `IBM`- Personal computer
+
+1980s : IBM personal computer w/ primitive ver. of OS called MS DOS (disk operating system) + with Microsoft Windows, it became dominant OS.
+
+ Video games - computers are not only used in workplace/research institutions. can also be used for fun :)
+
+GNU (open source) > set a foundation for the formation of Linux.
+
+#3. Digital Logic
+
+### 3-1) Computer Language
+
+by the end of this lesson ...
+
+- you'll understand what a computer calculates and how
+
+Computer uses `Binary System` for communication = only talks in 1s and 0s
+
+8 binary numbers = bits
+group of 8 bits = byte (ex.10110011)
+
+Each byte can store one character. 2^8 (=256) possible values
+
+###3-2) Character Encoding
+
+Character Encoding : is used to **assign our binary values to characters** so that we as humans can read them.
+
+마치 사전과 유사하다! Tells computer to look up which human characters should be represented by a given binary value. (Lookup table)
+
+Ex1) ASCII (=represents english alphabet, digits, punctuation marks)
+
+Ex2) UTF8 = allows us to store a character in more than 1 byte! 이건 Unicode standard를 따른다.
+
+Ex3) RGB = color을 represent 하기 위해 쓰인다 (각각 shade of color을 나타내는 3개의 Characters 사용)
+
+### 3-3) Binary
+
+컴퓨터는 어떻게 0과 1 신호를 받는가? 마치 Punch card에서 hole이 있고 없던 것처럼, 컴퓨터는 electricity via transistors, allowing electrical signals to pass through 하게 함.
+
+Electric voltage가 있으면 1, 없으면 0이라고 인식한다.
+
+Transistors 만으로는 복잡한 기능을 수행하기 힘들다. 이걸 도와주는 것이 Logic gates!
+
+`Logic gates` :  allow our transistors to do more complex tasks, like decide where to send electrical signals depending on logical conditions.
+
+### 3-4) How to Count in Binary
+
+byte = 0~255 까지, 총 2^8개의 decimal number 표현 가능.
+
