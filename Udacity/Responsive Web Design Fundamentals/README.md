@@ -1,6 +1,6 @@
 # Responsive Web Design Fundamentals 🐻
 
-👩🏻‍💻 From 19.09.11~
+👩🏻‍💻 From 19.9.11~
 
 
 
@@ -22,7 +22,10 @@ You’ll start by exploring what makes a site responsive and how some common res
 
 ## 2. 학습 동기
 
+To make responsive front-end
+
 
 
 ## 3. 학습 스케줄
 
+1 hour per day
