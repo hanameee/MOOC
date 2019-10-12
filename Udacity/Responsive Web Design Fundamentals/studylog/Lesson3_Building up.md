@@ -18,7 +18,7 @@ Media query를 통해 layout을 restruct 할 수 있다 :)
 <link rel="stylesheet" media="screen and (min-width:500px)" href="over500.css">
 ```
 
-link에 `media` attribute를 추가하고, screen and (min-width: 500px) 를 주면 screen 이 500px (=breakpoint) 보다 클때만 해당 stypesheet가 applied 된다.
+link에 `media` attribute를 추가하고, screen and (min-width: 500px) 를 주면 screen 이 500px 보다 클때만 해당 stypesheet가 applied 된다.
 
 신경써야 할 media type은 `screen` 이랑 `print`! (만약 유저가 화면을 print 할 것으로 예상되는 경우)
 
@@ -63,8 +63,45 @@ Responsive web design에 가장 자주 사용되는 media quries는 `min-width` 
 
 500px보다 작을때는 yes, 500px보다 클때는 no
 
-
-
 ⚠️min-device-width 와 max-device-width 는 **discouraged**!
 
 min-width는 browser window의 사이즈에 기반하고, min-device-width는 정말 display의 실제 width에 기반한다.
+
+
+
+### 6. Breakpoints
+
+Media query는 background color 같은 소소한 변화 외에도, Page의 전체 Layout을 짜는 데에 쓰일 수 있다!
+
+페이지가 레이아웃을 바꾸는 지점을 바로 **BREAKPOINT** 라고 한다.
+
+페이지에 따라 한개 혹은 여러개의 breakpoints 들이 있을 수 있다.
+
+
+
+### 9. Picking Breakpoints
+
+특정 기기, 상품, 브랜드명에 따라 breakpoint를 고른다면 유행에 따라 maintanence nightmare에 빠지게 될 것임. 다음 2년동안 어떤 기기가, 어떤 브랜드의 핸드폰을 사람들이 많이 쓸지 모르잖어!
+
+따라서 올바르게 breakpoint를 정하는 방법은 **content를 보고 직접 찾아내는 것**.
+
+We shouldn't choose breakpoints. Instead, we should find them using our content as a guide.
+
+
+
+### 10. Picking Breakpoints
+
+Flow를 보자면,
+
+1) 일단 chrome dev tool을 켜고 가장 작게 width를 줄인다.
+2) width를 서서히 늘여가면서 content 사이의 간격이 너무 넓어지거나 어색해지는 지점을 찾는다.
+3) 해당 지점을 breakpoint로 삼고 layout을 변경한다
+
+1~3을 반복!
+
+
+
+예시를 보니 일반적으로 3개의 version을 가진다 = 2 breakpoints (small, medium, large)
+
+Small > Medium으로 갈때 레이아웃이 크게 변하고, Medium > Large로 갈때는 content가 더 expand 하지 않도록 max-width를 고정시키고 margin만 키우는 식으로 많이 하는듯.
+
