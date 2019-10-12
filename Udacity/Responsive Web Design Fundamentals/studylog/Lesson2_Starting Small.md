@@ -67,3 +67,36 @@ img, embed, object, video {
 }
 ```
 
+
+
+### 13. Tap Target Sizes
+
+우리 손꾸락은 10mm ( = 0.5inch = 40css pixels) 정도의 넓이를 가지고 있다.
+
+따라서 버튼 혹은 a 태그들은 **최소한 48x48 pixels 이상의 크기 / 간격**을 두고 만드는 것이 좋다.
+
+```css
+nav a, button {
+  min-height: 48px;
+  min-width: 48px;
+}
+```
+
+그냥 `height` 나 `width` 는 container보다 content가 클 경우 resize가 안되고 그냥 고정되어 버리기에, 최소한의 사이즈인  min을 써주는 것이 조금 더 안전하다! 
+
+
+
+### 15. Start Small
+
+다른 screen size에 맞는 페이지를 구성하기 위해서는 작게 시작하는 것이 좋다. 즉, 가장 작은 phone에 맞춰 디자인하고, 그 다음엔 tablet, 그 다음 laptop!
+
+이유 1) Prioritize
+
+작게 시작함으로써, 유저에게 어떤 것이 가장 중요한지 우선순위를 정할 수 있다. 
+
+Key content 를 놓치지 않고 항상 포함시킬 수 있는 것.
+
+이유 2) Performance
+
+가장 작은 viewport 먼저 작업함으로써 퍼포먼스에 대해 자동으로 생각하게 된다. 
+
