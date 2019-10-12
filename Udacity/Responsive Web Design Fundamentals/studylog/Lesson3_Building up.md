@@ -105,3 +105,40 @@ Flow를 보자면,
 
 Small > Medium으로 갈때 레이아웃이 크게 변하고, Medium > Large로 갈때는 content가 더 expand 하지 않도록 max-width를 고정시키고 margin만 키우는 식으로 많이 하는듯.
 
+
+
+### 12. Complex Media Queries
+
+```css
+@media screen and (min-width: 500px) and (max-width: 600px) {
+}
+```
+
+이렇게 작성하면 500<=width<=600 사이에 대해 css를 적용할 수 있다. (좀 더 정교!)
+
+
+
+### 14. Grids
+
+ 가장 simple한 responsive design pattern 으로는 **Grid Fluid System**이 있다.
+
+Examples: Bootstrap, 960 pixel grid layout system.
+
+참고 링크: [HTML5rocks](https://www.html5rocks.com/en/tutorials/)
+
+
+
+### 15. Flexbox Intro
+
+Layout을 위해 사용할 수 있는 powerful한 tool! Flexbox를 활용하면 float 없이도 element들을 좌측/우측 정렬할 수 있다.
+
+⚠️ 하지만 꼭 사용할때 vendor prefixed version 을 포함시키기!
+
+
+
+### 16. Flexbox Container
+
+```css
+
+```
+
