@@ -1,0 +1,41 @@
+.container {
+    box-sizing: border-box;
+    display: flex;
+    align-items: left;
+}
+
+.small {
+    width: 50%;
+    max-width: 300px;
+    height: 300px;
+    margin: auto;
+    background-color: plum;
+    font-weight: bold;
+}
+
+.big {
+    width: 50%;
+    min-width: 300px;
+    height: 300px;
+    margin: auto;
+    background-color: mediumturquoise;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 500px) {
+    .small {
+        opacity: 1;
+    }
+    .big {
+        opacity: 0;
+    }
+}
+
+@media screen and (min-width: 501px) {
+    .small {
+        opacity: 0;
+    }
+    .big {
+        opacity: 1;
+    }
+}

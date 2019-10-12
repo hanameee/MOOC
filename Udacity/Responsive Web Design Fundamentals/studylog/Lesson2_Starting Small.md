@@ -99,4 +99,3 @@ Key content 를 놓치지 않고 항상 포함시킬 수 있는 것.
 이유 2) Performance
 
 가장 작은 viewport 먼저 작업함으로써 퍼포먼스에 대해 자동으로 생각하게 된다. 
-
