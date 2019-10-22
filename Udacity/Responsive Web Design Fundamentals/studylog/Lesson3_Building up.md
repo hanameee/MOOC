@@ -1,4 +1,4 @@
-# Lesson 2: Starting Small
+# Lesson 3: Buildling up
 
 
 
@@ -126,19 +126,49 @@ Examples: Bootstrap, 960 pixel grid layout system.
 
 참고 링크: [HTML5rocks](https://www.html5rocks.com/en/tutorials/)
 
+👩🏻‍💻**추가 학습 링크**
+
+[960 Grid System을 사용한 웹 페이지 제작](https://spoqa.github.io/2012/11/20/about-grid-system.html)
+
+[Building a Scrapbook Layout with CSS Grid](https://responsivedesign.is/news/2019/10/building-a-scrapbook-layout-with-css-grid/)
+
+[Sass로 12단 그리드 시스템 만드는 법]([https://medium.com/fluosoup/sass%EB%A1%9C-12%EB%8B%A8-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-%EB%B2%95-d2c7cf54c36](https://medium.com/fluosoup/sass로-12단-그리드-시스템-만드는-법-d2c7cf54c36)) : 원문 링크 [How to Create a 12 Column Grid System with Sass](https://inspirationalpixels.com/grid-system-with-sass/?source=post_page-----d2c7cf54c36----------------------)
+
+[responsive grid system - materialize](https://materializecss.com/grid.html)
+
 
 
 ### 15. Flexbox Intro
 
 Layout을 위해 사용할 수 있는 powerful한 tool! Flexbox를 활용하면 float 없이도 element들을 좌측/우측 정렬할 수 있다.
 
-⚠️ 하지만 꼭 사용할때 vendor prefixed version 을 포함시키기!
+⚠️ 하지만 꼭 사용할때 **vendor prefixed version** 을 포함시키기! >> Q&A webkit 뭐람? 참고
 
 
 
 ### 16. Flexbox Container
 
-```css
+1) display: flex;
 
+일반적으로, div 는 한줄을 완전히 다 먹는다. (자동 줄바꿈)
+하지만, div를 감싸는 container에 `display: flex` 를 선언하면? 자동으로 row 정렬된다. Flex의 디폴트 direction이 row이기 때문.
+
+```css
+.container {
+    flex-wrap: wrap;
+} 
 ```
+
+2) Flex-wrap: wrap;
+
+```css
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+```
+
+
+
+[flexbox로 만들 수 있는 10가지 레이아웃](https://d2.naver.com/helloworld/8540176) - NAVER D2 article 
 

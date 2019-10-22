@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container div {
+    width: 300px;
+    height: 300px;
+}
+
+.green {
+    background-color: green;
+}
+
+.grey {
+    background-color: grey;
+}
+
+.yellow {
+    background-color: yellow;
+}
