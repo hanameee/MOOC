@@ -42,3 +42,16 @@ pseudo 코드
 ```
 
 이렇게 디자인!
+
+
+
+### 3. Mostly Fluid
+
+Column drop과 유사하지만, 조금 더 grid스럽다! ( = 더 많은 컬럼과 breakpoints! )
+
+제일 작을 때는 100%로 stacked 되어 있다가, width가 커질수록 grid가 나타나며, widest viewport를 찍은 후에는 width는 더이상 늘어나지 않고 양 옆에 margin이 추가된다.
+
+
+
+
+
