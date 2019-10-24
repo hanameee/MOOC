@@ -1,4 +1,5 @@
 .container {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
 }
@@ -18,4 +19,24 @@
 
 .yellow {
     background-color: yellow;
+}
+
+.red {
+    background-color: red;
+}
+
+.orange {
+    background-color: orange;
+}
+
+.blue {
+    background-color: blue;
+}
+
+@media screen and (min-width: 700px) {
+    .red { order: 5; }
+    .orange { order: 4; }
+    .yellow { order: 3; }
+    .green { order: 2; }
+    .blue { order: 1; }
 }

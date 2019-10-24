@@ -168,7 +168,35 @@ Layout을 위해 사용할 수 있는 powerful한 tool! Flexbox를 활용하면 
 }
 ```
 
-
-
 [flexbox로 만들 수 있는 10가지 레이아웃](https://d2.naver.com/helloworld/8540176) - NAVER D2 article 
+
+
+
+### 17. Flex Item
+
+CSS order 속성을 사용해서 item의 순서를 변경할 수 있다.
+
+기본적으로 css는 markup 의 순서대로 표시되지만, media query 를 사용해서 넓이에 따라 표시되는 순서를 바꿀 수 있다.
+
+```html
+<div class="container">
+  <div class="box red"></div>
+  <div class="box orange"></div>
+  <div class="box yellow"></div>
+  <div class="box green"></div>
+  <div class="box blue"></div>
+</div>
+```
+
+```css
+@media screen and (min-width: 700px) {
+    .red { order: 5; }
+    .orange { order: 4; }
+    .yellow { order: 3; }
+    .green { order: 2; }
+    .blue { order: 1; }
+}
+```
+
+700px 이 넘어가는 순간 div들의 정렬이 거꾸로 바뀌게 된다! :)
 
