@@ -33,7 +33,7 @@
     background-color: orange;
 }
 
-/* breakpoint 450 | 750  */
+/* breakpoint 450 | 750  | 960 */
 
 @media screen and (min-width: 450px) {
     .orange, .yellow {

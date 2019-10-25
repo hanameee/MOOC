@@ -51,7 +51,80 @@ Column drop과 유사하지만, 조금 더 grid스럽다! ( = 더 많은 컬럼�
 
 제일 작을 때는 100%로 stacked 되어 있다가, width가 커질수록 grid가 나타나며, widest viewport를 찍은 후에는 width는 더이상 늘어나지 않고 양 옆에 margin이 추가된다.
 
+```css
+/* breakpoint 450 | 750  | 960 */
+
+@media screen and (min-width: 450px) {
+    .orange, .yellow {
+        width: 50%
+    }
+}
+
+@media screen and (min-width: 750px) {
+    .red {
+        width: 50%;
+    }
+    .yellow, .green, .blue {
+        /* 옛날 browser들 중 calc 속성을 먹지 않는 애들을 위한 대비책 */
+        width: 33.33%;
+        width: calc(100%/3);
+    }
+}
+
+@media screen and (min-width: 960px) {
+    .container {
+        width: 960px;
+        /* margin-left: auto; margin-right: auto */
+        margin: 0 auto;
+    }
+}
+```
+
+요런 식으로 줄 수 있겠지.
 
 
 
+### 4. Layout Shifter
+
+가장 responsive 한 pattern일 것임. viewport breakpoint 에 따라 order도 바뀐다! 앞서 배운 CSS order 속성을 사용한다.
+
+![layout shifter](https://camo.githubusercontent.com/37191b03f10485e603f334c5054c748a9ae148bd/687474703a2f2f692e696d6775722e636f6d2f786e376a3373662e706e67)
+
+이런 식으로 layout도 바뀌고, order도 바뀌는 것을 볼 수 있다.
+
+**🔑 KEY TAKEAWAYS 🔑**
+Element의 default order value 는 0이다. (약간 z-index같은 느낌이구만!)
+따라서 -1을 주면 가장 처음에 위치하게 될 것임.
+
+```css
+/* breakpoints 500 | 600 */
+
+@media screen and (min-width: 500px) {
+    .red {
+        width: 50%;
+    }
+
+    #container2 {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .red {
+        width: 25%;
+        order: 1;
+    }
+
+    #container2 {
+        width: 50%;
+    }
+
+    .green {
+        width: 25%;
+        /* 가장 처음에 위치하도록! */
+        order: -1;
+    }
+
+}
+```
 

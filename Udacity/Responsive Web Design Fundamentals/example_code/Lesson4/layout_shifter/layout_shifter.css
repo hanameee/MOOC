@@ -1,0 +1,36 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box {
+    /* height: 200px; */
+    width: 100%;
+}
+
+
+.blue {
+    background-color: blue;
+}
+
+.grey {
+    background-color: grey;
+}
+
+.green {
+    background-color: green;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.red {
+    background-color: red;
+}
+
+.orange {
+    background-color: orange;
+}
+
