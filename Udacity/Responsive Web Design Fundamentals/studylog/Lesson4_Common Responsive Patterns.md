@@ -128,3 +128,11 @@ Element의 default order value 는 0이다. (약간 z-index같은 느낌이구�
 }
 ```
 
+
+
+### 5. Off Canvas
+
+Off canvas는 content를 수직으로 쌓는 대신, 덜 사용되는 컨텐츠를 (ex. navigation, app menus) off screen 에 표시하고, 화면이 충분히 클때만 표시한다.
+
+보통 작은 화면에서는 햄버거 아이콘을 누르면 보이도록 되어있지!
+
