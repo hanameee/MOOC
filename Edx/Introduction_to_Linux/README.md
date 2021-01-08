@@ -28,13 +28,13 @@
 
 ### Chapter 1. The Linux Foundation
 
-| 제목                                     | 상태 | 요약                               |
-| ---------------------------------------- | ---- | ---------------------------------- |
-| Introduction and Learning Objectives     | ✅    | 챕터 소개                          |
-| The Linux Foundation                     | ✅    | Linux Foundation 홍보              |
-| The Linux Foundation Training            | ✅    | The Linux Foundation Training 홍보 |
-| Course Linux Requirements                |      |                                    |
-| Learning Objectives (Review) and Summary |      |                                    |
+| 제목                                     | 상태 | 요약                                                         |
+| ---------------------------------------- | ---- | ------------------------------------------------------------ |
+| Introduction and Learning Objectives     | ✅    | 챕터 소개                                                    |
+| The Linux Foundation                     | ✅    | Linux Foundation 홍보                                        |
+| The Linux Foundation Training            | ✅    | The Linux Foundation Training 홍보                           |
+| Course Linux Requirements                | ✅    | 대표적인 Linux 배포판들에 대한 소개와 각각의 특징 (Red Hat, SUSE, Debian) |
+| Learning Objectives (Review) and Summary | ✅    | Summary                                                      |
 
 ### Chapter 2. Linux Philosophy and Concepts
 
