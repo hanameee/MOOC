@@ -42,9 +42,20 @@
 | ---------------------------------------- | ---- | ------------------------------------------- |
 | Introduction and Learning Objectives     | ✅    | 챕터 소개                                   |
 | Linux History                            | ✅    | 리눅스 소개 1탄                             |
-| Linux Philosophy                         | ✅    | 리눅스 소개 2탕                             |
+| Linux Philosophy                         | ✅    | 리눅스 소개 2탄                             |
 | Linux Community                          | ✅    | 리눅스 커뮤니티 소개                        |
 | Linux Terminology                        | ✅    | 리눅스 커뮤니티에서 자주 사용되는 용어 정리 |
 | Linux Distributions                      | ✅    | Linux 배포판들의 구성 요소와 기능           |
 | Learning Objectives (Review) and Summary | ✅    | Summary                                     |
+
+### Chapter 3. Linux Basics and System Startup
+
+| 제목                                     | 상태 | 요약      |
+| ---------------------------------------- | ---- | --------- |
+| Introduction and Learning Objectives     | ✅    | 챕터 소개 |
+| The Boot Process                         | ✅    |           |
+| Kernel, init and Services                | ✅    |           |
+| Linux Filesystem Basics                  | ✅    |           |
+| Linux Distribution Installation          | ✅    |           |
+| Learning Objectives (Review) and Summary | ✅    |           |
 
