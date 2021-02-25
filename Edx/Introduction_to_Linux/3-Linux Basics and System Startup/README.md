@@ -69,13 +69,31 @@ OS 선택 후에는 boot loader이 선택된 OS의 커널을 RAM에 로드하고
 
 ### Initial RAM Disk
 
-initramfs 파일시스템 이미지에 올바른 root 파일 시스템을 마운트하기 위한 모든 액션들을 수행하는 프로그램/바이너리 파일이 들어있다. 예를 들어, 아래와 같은 액션들
+![The initial RAM disk](https://courses.edx.org/assets/courseware/v1/13f8548b13ebe15a19aa1a6c3964fceb/asset-v1:LinuxFoundationX+LFS101x+1T2020+type@asset+block/LFS01_ch03_screen22.jpg)
+
+**initramfs** 파일시스템 이미지에 올바른 root 파일 시스템을 마운트하기 위한 모든 액션들을 수행하는 프로그램/바이너리 파일이 들어있다. 예를 들어, 아래와 같은 액션들
 
 - 필요한 파일시스템, mass storage controllers를 위한 디바이스 드라이버 (현재 어떤 장치들이 있는지 파악하기 위해 쓰이는 udev facility와 함께)를 위한 커널 기능 제공 (이게 대체 무슨 소리람...)
 
 > The **initramfs** filesystem image contains programs and binary files that perform all actions needed to mount the proper root filesystem, like providing kernel functionality for the needed filesystem and device drivers for mass storage controllers with a facility called **udev** (for **u**ser **dev**ice), which is responsible for figuring out which devices are present
 
-- 디바이스 드라이버를 위치시키고, 로드하는 것
+- 제대로 작동하기 위해 필요한 디바이스 드라이버들을 위치시키고, 로드하는 것
+
+filesystem이 발견된 후에는 에러 체크를 한 후 마운트된다.
+
+**Mount** 프로그램은 OS에게 파일시스템이 사용 가능하다고 안내하고, mount point와 파일시스템을 연동한다. 이 과정이 성공적이라면 initramfs는 RAM에서 제거되고, root fs(`/sbin/init`)의 init 프로그램이 실행된다.
+
+**init**은 실제 최종 root filesystem으로의 mounting, pivoting을 담당한다. 만약 특정 하드웨어 드라이버가 mass storage가 접근 가능해지기 전에 필요하다면, 그 드라이버는 initramfs 이미지 안에 있어야 한다.
+
+### Text-Mode Login
+
+![Text-Mode Login](https://courses.edx.org/assets/courseware/v1/e35bea5a8c6b9a41453a0e01c5ca3077/asset-v1:LinuxFoundationX+LFS101x+1T2020+type@asset+block/LFS01_ch03_screen26.jpg)
+
+**init**은 여러 text-mode login 시도들을 실행한다. 이 시도들은 유저가 username, password를 입력하게 한 후 command shell을 겟또하게 한다. 만약 graphical login interface를 사용하는 시스템을 쓰고 있다면 요런 text-mode login은 보이지 않는다.
+
+주로 기본값 command shell은 **bash**(GNU Bourne Again Shell)다. 하지만 더 발전된 command shell도 많다!
+
+Shell은 명령어를 받아들일 준비가 되었다는 의미로 text prompt를 출력한다. 유저가 커맨드를 치고 엔터를 누르면 커맨드가 실행되고, 커맨드가 끝난 후에는 다른 propmt가 출력된다.
 
 ## Kernel, init and Services
 
