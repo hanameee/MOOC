@@ -153,3 +153,42 @@ sudo systemctl enable|disable nfs.service
 ```
 
 대부분의 경우 `.service` 을 생략해도 된다.
+
+## Linux Filesystems Basics
+
+### Linux Filesystems 
+
+파일시스템은 임의의 data의 collection들을 사람이 이용할 수 있는 형태로 보관하고 정리하는 냉장고와도 유사하다. 냉장고에 물건들을 크기, 종류, 모양 별로 분리해놓듯이.
+
+Linux가 지원하는 파일시스템의 종류는 다음과 같다.
+
+- Conventional disk filesystems: ext2, ext3, ext4, XFS, Btrfs, JFS, NTFS, etc. 
+- Flash storage filesystems: ubifs, JFFS2, YAFFS, etc. 
+- Database filesystems 
+- Special purpose filesystems: procfs, sysfs, tmpfs, squashfs, debugfs, etc.
+
+### Partitions and Filesystems
+
+**Partition**이란? 디스크에서 물리적으로 인접한 디스크의 섹션이다.
+
+**Filesystem**이란? 하드 디스크(주로 partition)에서 파일을 저장하고/찾는 방법이다.
+
+파티션은 파일시스템을 담은 용기와 유사한 개념이다. 단, 몇몇 경우, symbolic link를 사용할 경우 파일 시스템은 파티션을 넘어 확장될 수도 있다.
+
+[윈도우와 리눅스의 파일시스템 비교]
+
+|                                  | **Windows** | **Linux**              |
+| -------------------------------- | ----------- | ---------------------- |
+| Partition                        | Disk1       | **/dev/sda1**          |
+| Filesystem Type                  | NTFS/VFAT   | EXT3/EXT4/XFS/BTRFS... |
+| Mounting Parameters              | DriveLetter | MountPoint             |
+| Base Folder (where OS is stored) | C:\         | /                      |
+
+### The Filesystem Hierarchy Standard
+
+
+
+### More About the Filesystem Hierarchy Standard
+
+
+
