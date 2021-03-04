@@ -186,9 +186,23 @@ Linux가 지원하는 파일시스템의 종류는 다음과 같다.
 
 ### The Filesystem Hierarchy Standard
 
+리눅스는 Filesystem Hierarchy Standard (FHS) 라는 표준 레이아웃에 따라 중요한 파일들을 저장한다. 이런 표준을 두는 이유는, 사용자들이 매번 새롭게 배우지 않으면서도 다양한 Linux distribution들을 사용할 수 있게끔 하기 위해서이다.
 
+리눅스는 path 구분을 위해 `/` 기호를 사용하고, 별도의 drive letters가 없다. 여러 drivers나 partition은 단일 파일시스템의 directory로 마운트된다. CD,DVD,USB처럼 제거가능한 미디어는 최근 리눅스에서는 `/run/media/{username}/{disklabel}` 으로, 예전 리눅스 배포판에서는 `/media` 로 마운트된다.
+
+<img src="README.assets/dirtree.png" alt="img" style="zoom:50%;" />
 
 ### More About the Filesystem Hierarchy Standard
 
+모든 리눅스 파일시스템은 case-sensitive 하다. (`/boot`, `/Boot`, `/BOOT` 는 다 각기 다른 디렉토리임)
 
+많은 배포판은 (1) 올바른 시스템 작동을 위한 코어 유틸리티와 (2) 타 프로그램 을 구분한다. 후자는 주로 `/usr` 디렉토리 하위에 보관된다. 
+
+### Video: Viewing the Filesystem Hierarchy from the Graphical Interface in Ubuntu
+
+우분투에서 전체 디렉토리를 확인하려면 아래 사진에서는 Other Locations > Computer 로 들어가면 root directory부터 볼 수 있다.
+
+<img src="README.assets/image-20210304220059145.png" alt="image-20210304220059145" style="zoom:50%;" />
+
+현재 Path를 보려면 `ctrl+L` 을 누르면 됨.
 
