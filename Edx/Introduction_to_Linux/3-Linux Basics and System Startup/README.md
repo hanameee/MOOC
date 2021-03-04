@@ -206,3 +206,71 @@ Linux가 지원하는 파일시스템의 종류는 다음과 같다.
 
 현재 Path를 보려면 `ctrl+L` 을 누르면 됨.
 
+## Linux Distribution Installation
+
+### Choosing a Linux Distribution
+
+어떤 Linux 배포판을 사용할 것인가?_?
+
+전부 다는 아니지만 아래와 같은 선택지가 있다.
+
+<img src="README.assets/distros.png" alt="Choosing a Linux Distribution" style="zoom:50%;" />
+
+### Questions to Ask When Choosing a Distribution
+
+배포판을 고를 때 생각해보면 좋은 질문들
+
+- 주로 어떤 용도로 시스템을 사용할 것인지? (서버/데스크탑)
+- 조직에게 중요한 package가 어떤 종류인지? (웹서버/word processing...)
+- 얼마나 많은 하드디스크 용량이 필요하고/얼마나 여유가 있는지 (ex. Embedded 디바이스에 리눅스를 설치할 때는 보통 용량이 제한적이다)
+- packages가 얼마나 자주 업데이트 되는지?
+- 각 릴리즈 간의 support cycle이 얼마나 긴지? (ex. LTS releases들이 장기 서포트를 지원한다)
+- 제 3자/벤더로부터 커널 customization이 필요한지?
+- 어떤 하드웨어로 돌리는지? X86, ARM 등..
+- 장기 안정성이 필요한지? 혹은 최신 소프트웨어를 지원하는 변화가 빠른 cutting-edge 시스템이라도 수용 가능한지?
+
+### Linux Installation: Planning
+
+**Partition 레이아웃**은 설치하는 시점에 정해져야 한다. 설치 후에는 변경하기 힘들 수 있다...!
+
+리눅스 시스템은 여러 partition을 파일시스템의 특정 포인트에 mount 해서 관리하고, 내가 직접 디자인을 바꿀 수도 있다! 하지만 처음에는 항상 보고 따라하는게 쉬우니까, 모범 사례에 대해 알아BOZA.
+
+대부분의 installers는 쓸만한 default 레이아웃들을 제공한다.
+
+- 하나의 big partition에 일반 파일들을 할당, 작은 swap partition
+- /home, /var 처럼 space-sensitive한 공간에 각기 다른 partition을 할당
+
+등등...
+
+![Partitions in the Linux hard disk](README.assets/LFS01_ch03_screen_34.jpg)
+
+[참고] 리눅스 SWAP 파티션이 하는 일: https://sergeswin.com/1034/
+
+### Linux Installation: Software Choices
+
+모든 installation은 리눅스 배포판을 사용하기 위한 bare mininum software을 제공하고, 몇몇 installer들은 추가적인 소프트웨어 설치 옵션을 제공하기도 한다. 대표적으로 Firefox 웹 브라우저나, LibreOffice office suite, vi나 emacs 같은 developer tools, 그리고 기타 인기 많은 서비스들 (아파치 웹서버나 MySQL...) 등의 프로그램들이 있다. 추가로, graphical desktop을 포함한 시스템은 기본적으로 chosen desktop (ex. GNOME, KDE) 이 깔려있다.
+
+모든 installers는 새로운 시스쳄에 초기 보안 기능을 설정한다. 가장 기본적인 단계는 superuser (root) 를 위한 비밀번호를 설정하고, initial user을 설정하는 것이다.
+
+몇몇 배포판의 경우 (ex. Ubuntu) 처음에는 오로지 initial user만 설정되고, direct root login은 설정되어있지 않다. Root access를 위해서는 처음에 일단 normal user로 로그인 한 뒤, **sudo**를 사용해야 한다.
+
+###  Linux Installation: Install Source
+
+다른 OS처럼, 리눅스 배포판도 CD, USB, DVD같이 제거가능한 media로 제공된다. 처음 booting은 small image로 하고, 나머지 시스템은 네트워크로 다운받을 수 있게도 지원한다.
+
+많은 installer들은 설치 옵션들이 정의된 configuration file을 사용해서 설치 과정이 완전히 자동으로 이뤄질 수 있게 지원한다. 이 파일은 Red Hat-based 시스템에서는 `Kickstart` 로, SUSE-based 시스템에서는 `AutoYAST` 로, Debian-based 시스템에서는 `Preseed` 로 불린다.
+
+각 배포판들은 이런 config 파일을 어떻게 생성하고 관리할지에 대한 설명과 툴들을 지원한다!
+
+### Linux Installation: The Process
+
+설치 과정은 배포판들이 다 비슷비슷함.
+
+Installation media로부터 부팅을 하고 나면, installer이 시작한다.
+
+installer은 시스템이 어떻게 설정되어야 할지에 대한 질문을 하고, (Auto installation 파일이 제공되면 이런 질문들은 스킵됨) 설치가 수행된다.
+
+마지막으로, 컴퓨터는 새롭게 설치된 시스템으로 재부팅된다! (이때, 몇몇 배포판에서는 재부팅 후 추가적인 질문이 있을 수도 있다)
+
+대부분의 installer들은 설치 과정 중 인터넷 접근을 통해 업데이트를 다운로드 및 설치하는 옵션이 있다. (이때 안해도 일반적으로 업데이트 하는 것처럼 나중에 설치 다 되고 난 후에 해도 됨)
+
