@@ -30,7 +30,6 @@
 
 | 제목                                     | 상태 | 요약                                                         |
 | ---------------------------------------- | ---- | ------------------------------------------------------------ |
-| Introduction and Learning Objectives     | ✅    | 챕터 소개                                                    |
 | The Linux Foundation                     | ✅    | Linux Foundation 홍보                                        |
 | The Linux Foundation Training            | ✅    | The Linux Foundation Training 홍보                           |
 | Course Linux Requirements                | ✅    | 대표적인 Linux 배포판들에 대한 소개와 각각의 특징 (Red Hat, SUSE, Debian) |
@@ -40,7 +39,6 @@
 
 | 제목                                     | 상태 | 요약                                        |
 | ---------------------------------------- | ---- | ------------------------------------------- |
-| Introduction and Learning Objectives     | ✅    | 챕터 소개                                   |
 | Linux History                            | ✅    | 리눅스 소개 1탄                             |
 | Linux Philosophy                         | ✅    | 리눅스 소개 2탄                             |
 | Linux Community                          | ✅    | 리눅스 커뮤니티 소개                        |
@@ -52,10 +50,33 @@
 
 | 제목                                     | 상태 | 요약      |
 | ---------------------------------------- | ---- | --------- |
-| Introduction and Learning Objectives     | ✅    | 챕터 소개 |
 | The Boot Process                         | ✅    |           |
 | Kernel, init and Services                | ✅    |           |
 | Linux Filesystem Basics                  | ✅    |           |
 | Linux Distribution Installation          | ✅    |           |
-| Learning Objectives (Review) and Summary | ✅    |           |
+
+### Chapter 4. Graphical Interface
+
+| 제목                                     | 상태 | 요약      |
+| ---------------------------------------- | ---- | --------- |
+| Graphical Desktop                        | ✅    |           |
+| Session Management                       | ✅    |           |
+| Basic Operations                         | ✅    |           |
+
+### Chapter 5. System Configuration from the Graphical Interface
+
+| 제목                                    | 상태 | 요약      |
+| --------------------------------------- | ---- | --------- |
+| System, Display, Date and Time Settings | ✅    |           |
+| Network Manager                         | ✅    |           |
+| Installing and Updating Software        | ✅    |           |
+
+### Chapter 6. Common Applications
+| 제목                                      | 상태 | 요약 |
+| ----------------------------------------- | ---- | ---- |
+| Internet Applications                     | ✅    |      |
+| Productivity and Development Applications | ✅    |      |
+| Multimedia Applications                   | ✅    |      |
+| Graphics Editors and Utilities            | ✅    |      |
+
 
