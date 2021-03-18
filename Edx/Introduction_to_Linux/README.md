@@ -81,10 +81,10 @@
 
 ### Chapter 7. Command Line Operations
 
-| 제목                                      | 상태 | 요약 |
-| ----------------------------------------- | ---- | ---- |
-| Command-Line Mode Options                 | ✅    |      |
-| Productivity and Development Applications | ✅    |      |
-| Multimedia Applications                   | ✅    |      |
-| Graphics Editors and Utilities            | ✅    |      |
+| 제목                           | 상태 | 요약 |
+| ------------------------------ | ---- | ---- |
+| Command-Line Mode Options      | ✅    |      |
+| Basic Operations               | ✅    |      |
+| Multimedia Applications        | ✅    |      |
+| Graphics Editors and Utilities | ✅    |      |
 

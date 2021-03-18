@@ -112,3 +112,32 @@ $ sudo systemctl start gdm
 $ sudo telinit 5
 ```
 
+## Basic Operations
+
+command line으로 기초적인 작업들을 해봅시다.
+
+### Logging in and out
+
+사용 가능한 text terminal은 유저의 이름과 비밀번호를 prompt한다. 이렇게 text terminal로 로그인하든, graphical terminal program으로 로그인하든, 세션이 시작한 후에는 Secure Shell(SSH)를 사용해 원격의 시스템에 연결해 로그인할 수 있다.
+
+예를 들어, `ssh student@remote-server.com` 이라고 치면 SSH는 secure하게 `remote-server.com` 이라는 원격 머신에 연결할 것이다.  그 후 student에 로그인을 요청하거나, 혹은 비밀번호 없이 cryptographic key를 통해 identity 인증을 하도록 요구할 것.
+
+### Rebooting and Shutting Down
+
+시스템을 종료하거나 재부팅하기 위해 선호되는 방법은 `shutdown` 명령어를 사용하는 것이다. 이 명령어는 경고 메세지를 보내고, 이후 유저들이 로그인하는 것을 막는다! 
+
+그 후 init process가 시스템을 종료하거나 재부팅하는 것을 컨트롤한다.
+
+- `halt` , `poweroff` : `shutdown -h` 를 issue한다.
+
+- `reboot`: `shutdown -r` 을 issue한다.
+
+### Locating Applications
+
+배포판에 따라 프로그램과 소프트웨어 패키지가 다양한 디렉토리에 설치되긴 하지만, 일반적으로 실행 가능한 프로그램/스크립트는 `/bin`, `/usr/bin`, `/sbin`, `/usr/sbin` , `/opt`, `/usr/local/bin`, `/usr/local/sbin`, 또는  `/home/student/bin` 처럼 유저 계정 공간에 위치한다.
+
+프로그램이 어디 있는지 찾기 위해서 사용할 수 있는 유틸리티는 **which**이다!
+
+<img src="../3-Linux Basics and System Startup/README.assets/image-20210318235532227.png" alt="image-20210318235532227" style="zoom:50%;" />
+
+이런 식으로 특정 프로그램이 파일시스템 내 어디에 위치해 있는지를 정확히 찾을 수 있다. 만약 which가 찾지 못한다면, **whereis** 유틸리티가 대안이 될 수 있다! whereis는 where보다 더 넓은 범위에서 패키지를 찾기 때문이다.
