@@ -141,3 +141,100 @@ command line으로 기초적인 작업들을 해봅시다.
 <img src="../3-Linux Basics and System Startup/README.assets/image-20210318235532227.png" alt="image-20210318235532227" style="zoom:50%;" />
 
 이런 식으로 특정 프로그램이 파일시스템 내 어디에 위치해 있는지를 정확히 찾을 수 있다. 만약 which가 찾지 못한다면, **whereis** 유틸리티가 대안이 될 수 있다! whereis는 where보다 더 넓은 범위에서 패키지를 찾기 때문이다.
+
+### Accessing Directories
+
+처음 시스템에 로그인하거나 터미널을 열었을 때, 기본 디렉토리는 `home` 디렉토리다! home 디렉토리의 정확한 path 값은 `echo $HOME` 으로 확인할 수 있다.
+
+<img src="README.assets/image-20210319003725519.png" alt="image-20210319003725519" style="zoom:50%;" />
+
+실제로 많은 리눅스 배포판들이 새 graphical terminal을 `$HOME/Desktop` 에서 연다!_!
+
+ 아래는 디렉토리 탐색에 유용한 명령어들
+
+| **Command**                    | **Result**                                                   |
+| ------------------------------ | ------------------------------------------------------------ |
+| pwd                  | Displays the present working directory                       |
+| cd ~ 또는 cd.. | Change to your home directory (shortcut name is ~) |
+| cd ..        | Change to parent directory                    |
+| cd -             | Change to previous directory           |
+
+### Understanding Absolute and Relative Paths
+
+경로를 표현하는 2가지 방법이 있다.
+
+- 절대경로: root directory부터 시작하는 경로로, **항상 `/` 로 시작한다.**
+- 상대경로: 현재 작업 디렉토리 (pwd)부터 시작하는 경로로, **절대 `/` 로 시작하지 않는다.** 현 디렉토리를 표현하는 `.`, 부모 디렉토리를 표현하는 `..` 과 home 디렉토리를 표현하는 `~` 를 사용해 상대경로를 표현한다.
+
+### Exploring the Filesystem
+
+파일시스템을 traverse 하는건 꽤나 번거롭다. 이때, `tree` 명령어를 통해 파일시스템 트리를 편리하게 볼 수 있다. `tree -d`  를 사용하면 파일을 제외한 폴더 목록만 깔끔하게 볼 수도 있다.
+
+아래는 파일시스템을 돌아다니는데 도움이 되는 명령어들!
+
+| **Command** | **Usage**                                                    |
+| ----------- | ------------------------------------------------------------ |
+| cd /        | Changes your current directory to the root (/) directory (or path you supply) |
+| ls          | List the contents of the present working directory           |
+| ls -a       | List all files, including **hidden files and directories**   |
+| tree        | Displays a tree view of the filesystem                       |
+
+### Hard Links, Soft Links
+
+Hard Link, Soft Link는 모두 유닉스 (계열의) 시스템을 사용할 때 파일을 쉽게 사용할 수 있게 도와주는 기능이다. 하나의 원본 파일에 두 개 이상의 이름을 유지하는 방법을 제공하는 것이 바로 링크이고, 링크 생성을 통해 편리하게 파일과 디렉토리를 관리할 수 있다. 
+
+하드링크, 소프트링크 모두 `ln` 명령어 (소프트링크의 경우 -s 옵션 추가)로 만든다.
+
+#### Hard Links 
+
+하드링크는 `ln -s [원본이름] [하드링크이름]` 으로 생성한다.
+
+하드 링크는, 파일의 복사본과 유사하지만 `cp`(파일 복사 명령어)와는 다르다. 하드링크는 원본과 같은 **inode** 를 가지는 복사본을 만들고, 하드링크를 수정하면 원본과 원본에서 파생된 다른 하드링크들이 동일하게 수정된다.
+
+[참고: inode란?]
+
+`ls -li` 를 해보면 아래처럼 가장 좌측에 뜨는 8자리의 고유번호가 있다 (`-l`: 일련의 정보를 보여주는 플래그, `-i`: inode를 보여주는 플래그)
+
+이 번호가 바로 inode이고, inode는 마치 사람의 주민번호와 같이, 파일이 생성될 때마다 생기는 고유의 번호이다.
+
+<img src="README.assets/image-20210320232213844.png" alt="image-20210320232213844" style="zoom:50%;" />
+
+원본을 지우더라도 하드링크는 보존되며, 동일한 데이터로 실행할 수 있다.
+
+#### Soft Links
+
+소프트 링크는 `ln -s [원본이름] [소프트링크이름]` 으로 생성한다.
+
+소프트 링크는 바로가기 아이콘과 유사하다. 원본을 복사하고, 어디에서 수정을 하든 내용이 함께 변경된다. 하지만 원본을 삭제했을 때도 상관없는 하드 링크와는 달리, 소프트 링크는 원본을 삭제하게 되면 연결이 끊겨 무용지물이 되버린다. (다만, 삭제된 원본과 동일한 이름의 파일이 생기면 링크가 다시 연결된다.)
+
+또, 하드 링크와는 달리 소프트 링크는 원본과 다른 inode를 가지고, 파일 권한 부분에서 맨 앞에 l이 붙는다. (아래 사진 예시에서 `soft.md`)
+
+<img src="README.assets/image-20210320233444274.png" alt="image-20210320233444274" style="zoom:50%;" />
+
+#### 하드 링크 vs 소프트 링크 (심볼릭 링크, symlink)
+
+|                  | **하드 링크**                                | **심볼릭 링크**                           |
+| ---------------- | -------------------------------------------- | ----------------------------------------- |
+| **복제 형태**    | 원본 복사                                    | 바로가기 생성                             |
+| **용량**         | 원본 데이터 만큼 차지                        | 없음                                      |
+| **i Node 값**    | 원본과 공유                                  | 공유 x                                    |
+| **데이터 Sync**  | 원본 변경 시 링크 본 도 변경됨 (반대도 성립) |                                           |
+| **생성 대상**    | 파일만 가능                                  | 파일 및 폴더                              |
+| **파일 시스템**  | 동일한 파일 시스템에만 생성 가능             | 다른 파일 시스템에도 생성 가능            |
+| **구분 방법**    | 구분이 어려움 (i-node 값으로 확인해야 함)    | li 명령어 수행 시 가장 왼쪽에 l로 표시됨  |
+| **원본 삭제 시** | 하드 링크 데이터 그대로 사용 가능            | 사용 불능 (원본 경로 생성 시 다시 연결됨) |
+
+표 출처: https://funfunit.tistory.com/28 
+
+[참고 링크]
+
+https://6kkki.tistory.com/10 
+
+### Navigating the Directory History
+
+`cd` 명령어로 이동할 시 이전에 방문했던 디렉토리가 저장되어 `cd -`로 재방문 할 수 있다. 만약 하나 이상의 과거 방문 디렉토리를 기억하고 싶다면, `cd` 대신 `pushd`를 사용하면 된다. pushd를 사용하면 방문한 디렉토리들을 list에 추가해서 기억하고, `popd`를 통해 후입선출로 과거 방문 디렉토리를 재방문할 수 있다.
+
+디렉토리들의 목록은 `dirs` 명령어로 파악할 수 있다.
+
+<img src="README.assets/image-20210320234125183.png" alt="image-20210320234125183" style="zoom:50%;" />
+
