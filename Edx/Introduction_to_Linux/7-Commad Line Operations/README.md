@@ -179,6 +179,12 @@ command line으로 기초적인 작업들을 해봅시다.
 | ls -a       | List all files, including **hidden files and directories**   |
 | tree        | Displays a tree view of the filesystem                       |
 
+아래처럼 ls 뒤에 열람을 원하는 파일 명만을 기입하면 해당 파일들의 정보만 파악할 수 있다.
+
+```bash
+ls -l file1 file2
+```
+
 ### Hard Links, Soft Links
 
 Hard Link, Soft Link는 모두 유닉스 (계열의) 시스템을 사용할 때 파일을 쉽게 사용할 수 있게 도와주는 기능이다. 하나의 원본 파일에 두 개 이상의 이름을 유지하는 방법을 제공하는 것이 바로 링크이고, 링크 생성을 통해 편리하게 파일과 디렉토리를 관리할 수 있다. 
@@ -237,4 +243,85 @@ https://6kkki.tistory.com/10
 디렉토리들의 목록은 `dirs` 명령어로 파악할 수 있다.
 
 <img src="README.assets/image-20210320234125183.png" alt="image-20210320234125183" style="zoom:50%;" />
+
+## Working with Files
+
+### Viewing Files
+
+파일을 열람하기 위해 사용할 수 있는 유틸리티들은 아래와 같다.
+
+You can use the following command line utilities to view files:
+
+| **Command** | *Usage\****                                                  |
+| ----------- | ------------------------------------------------------------ |
+| cat         | 많이 길지 않은 파일을 열람하기 위해 사용하는 명령어. scroll-back을 지원하지 않는다. |
+| tac         | <br />![image-20210322225210231](README.assets/image-20210322225210231.png) |
+| less        | paging program이라서 cat보다 큰 파일을 열람하기 위해 사용하는 명령어이다. Scroll-back 지원, 검색, navigate 지원 등등...<br /><img src="README.assets/image-20210322225904916.png" alt="image-20210322225904916" style="zoom:%;" /> 앞에서부터 검색할 때는 `/ [검색어]` 를, 뒤에서부터 검색할 때는 `? [검색어]` 를 이용하면 된다. 검색 후 일치하는 다음 문자열로 이동할 때는 `n`, 일치하는 이전 문자열로 이동할 때는 `N` 을 사용한다. |
+| tail        | 파일의 마지막 10줄을 출력한다. `-n 원하는 줄 수 (ex. -n 15)` 나 혹은 더 짧게 `-원하는 줄 수 (ex. -15)` 옵션을 넘겨서 열람이 필요한 줄 수를 변경할 수 있다. |
+| head        | tail의 정반대 동작. 파일 앞에서부터 10줄을 출력한다. 마찬가지로 옵션을 넘겨서 열람하고 싶은 줄 수를 변경 가능하다. |
+
+### touch
+
+touch는 파일의 접근 권한 설정/수정, 파일의 수정시간을 변경하기 위해 자주 사용된다. 기본적으로 touch는 파일의 timestamp를 현재 시간으로 리셋한다.
+
+하지만, touch를 사용해 아래처럼 빈 파일을 만들 수도 있다.
+
+```bash
+touch [파일이름]
+touch [파일이름1] [파일이름2] # 한꺼번에 여러개의 파일도 만들 수 있다
+```
+
+touch에는 여러 다양한 옵션들이 있는데, `-t` 옵션을 이용하면 파일의 timestamp를 함께 설정할 수 있다.
+
+```bash
+touch -t 03211600 touched_file # 3월 21일, 16시(4pm)로 timestamp가 설정된 touched_file을 생성 
+touch -t 1803141400 past_touched_file # 연도를 명시해서 올해가 아닌 연도로 ex.2018년 3월 14일 14시(2pm) 생성할 수도 있음
+```
+
+<img src="README.assets/image-20210322231535289.png" alt="image-20210322231535289" style="zoom:50%;" />
+
+### mkdir and rmdir
+
+**mkdir** 은 디렉토리를 생성하기 위해 사용된다. 파일 이름만 명시하면 현 디렉토리 하에 새로운 디렉토리를 생성하고, 디렉토리 path를 명시해주면 특정 디렉토리 하에 새로운 디렉토리를 생성할 수 있다.
+
+```bash
+mkdir sampdir # 현 디렉토리 하에 sampdir 생성
+mkdir /usr/sampdir # /usr 하에 sampdir 생성
+```
+
+`-p` 옵션을 이용하면 subdirectory를 가진 디렉토리도 만들 수 있다. 
+
+```bash
+mkdir -p /tmp/somedir/subdir # -p 옵션 없이 subdir이 있는 somedir을 만들려고 시도하면 에러가 난다.
+```
+
+**rmdir** 은 디렉토리를 삭제하기 위해 사용된다. 비어있는 디렉토리만 삭제할 수 있는데, `rm -rf` 명령어를 사용하면 빈 디렉토리가 아니어도 삭제할 수 있다. (디렉토리 하의 모든 내용이 함께 삭제된다.)
+
+rm -rf는 하위 디렉토리를 재귀적으로 돌며 하위의 모든 것들을 삭제하기 때문에 짱짱 편리하지만 짱짱 위험하다. 특히 root 디렉토리에서 사용하면 정말 아찔한 것이다...조심해서 사용하도록 하자.
+
+### Moving, Renaming or Removing a File
+
+**mv** 명령어는 파일을 단순히 rename 하는 역할과, (파일을 rename 하는 동시에) 파일 위치를 옮기는 역할 2가지를 할 수 있다. 파일 뿐만 아니라 **디렉토리**이동/rename에도 mv 명령어롤 사용한다.
+
+**rm** 명령어는 파일을 삭제하는 명령어이다. `-f` 옵션으로는 강제 삭제를. `-i` 옵션으로는 interactive 삭제를 할 수 있다. 만약 정규표현식 등으로 파일을 삭제할 경우 -i 옵션으로 삭제하면 패턴에 매칭되어 삭제되는 파일들이 어떤 친구들인지 확인하고 안전하게 삭제할 수 있다.
+
+### Modifying the Command Line Prompt
+
+쉘 변수 부분 참고 링크: https://webdir.tistory.com/105
+
+리눅스에서는 현재 사용자의 시스템 사용환경을 개별적으로 사용할 수 있게 지원하는 사용자 별 시스템 환경변수가 있고, 이를 **쉘 변수** 라고 한다.  `env` 명령어를 통해 쉘 변수들을 확인할 수 있다.
+
+쉘 변수들 가운데, **PS1** 이라는 변수는 우리가 사용하는 쉘 변수의 모양을 결정한다.
+
+```bash
+echo $PS1 # 쉘 변수를 출력
+```
+
+$PS1 을 변경하면, 터미널의 프롬프트에 출력되는 문자를 변경할 수 있다. 현재 사용자 명, 시간 등등 다양한 쉘 변수 기호를 이용해 정보를 표시할 수 있다. 일례로, 아래와 같이 PS1을 설정하면
+
+```bash
+$ PS1="\u@\h \$ "
+```
+
+`\u`는 사용자명을, `/h`는 호스트명을 의미하기에 사용자명과 호스트명을 프롬프트에서 확인할 수 있다.
 
