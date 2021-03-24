@@ -325,3 +325,119 @@ $ PS1="\u@\h \$ "
 
 `\u`는 사용자명을, `/h`는 호스트명을 의미하기에 사용자명과 호스트명을 프롬프트에서 확인할 수 있다.
 
+## Searching for Files
+
+### Standard File Streams
+
+명령어가 실행되었을 때, 기본적으로 항상 사용 가능한 3개의 standard file stream (또는 descriptor) 이 있다. 
+
+- standard input (stdin)
+- standard output (stdout)
+- standard error (stderr)
+
+stdin은 보통 키보드이고, stdout과 stderr은 터미널에 프린트 된다. 주로 stdin은 파일이나, (파이프를 통해) 이전 명령어의 아웃풋으로부터 supply 되고, stderr과 stdout은 파일로 리다이렉트 된다. (이부분 아직 잘 이해가 안됨😕)
+
+리눅스에서 모든 열려있는 상태의 파일들은 내부적으로 file descriptor로 표현된다. 이는 0부터 시작하는 숫자!
+
+아래 표의 Value 열이 바로 이 file descriptor 값.
+
+| 이름            | **Symbolic Name** | **Value** | **Example** |
+| --------------- | ----------------- | --------- | ----------- |
+| standard input  | **stdin**         | 0         | keyboard    |
+| standard output | **stdout**        | 1         | terminal    |
+| standard error  | **stderr**        | 2         | log file    |
+
+만약 이 3개 외의 다른 파일들이 추가로 열린다면 (by default로 열린 친구들) 걔들은 file descriptor 3부터 증가하는 값으로 표현될 것.
+
+### I/O Redirection
+
+command shell로 3개의 standard file stream을 redirect 할 수 있다. 키보드 대신 파일이나 다른 명령어로부터 input을 얻는다거나, output과 error을 파일에 write하거나/이후의 명령어에 사용하거나 등등...
+
+예를 들어 만약 우리가 stdin에서 read하고 stdout, stderr에 write하는 `do_something`이라는 프로그램이 있다면, 
+
+우리는 `< [input data로 쓰일 파일 이름]` 을 통해 이 프로그램의 input source를 변경할 수 있다.
+
+```bash
+do_something < input-file
+```
+
+마찬가지로 `> [output data로 쓰일 파일 이름]` 을 통해 output을 파일으로 전송할 수 있다.
+
+```bash
+do_something > output-file
+# do_something 1> output-file 도 가능하다
+```
+
+stderr의 경우 stdout과는 다르기에 에러메세지가 여전히 터미널에 뜨게 된다. 만약 stderr을 별도의 파일로 리다이렉트 하고 싶다면 stderr의 file descriptor number인 2와 `>` 를 사용하면 된다. 아래처럼!
+
+```bash
+do_something 2> error-file
+```
+
+만약 stdout과 stderr을 모두 같은 하나의 파일로 보내고 싶다면?
+
+```bash
+do_something > all-output-file 2>&1
+# 또는 아래와 같은 축약 버전도 있다
+do_something >& all-output-file
+```
+
+### Pipes
+
+UNIX/Linux의 철학은 하나의 복잡한 프로그램이 모든 일을 하는 것 보단, 여러개의 짧고 간단한 프로그램 (또는 명령어가) 복잡한 결과를 생산해내기 위해 협력하는 것이다.
+
+이런 작업을 위해 **pipes**를 활용하게 된다! 하나의 프로그램/명령어의 output을 다른 프로그램/명령어의 input으로 pipe 할 수 있다.
+
+이를 위해서 우리는 `|` 명령어 간에 요 기호(pipe symbol)를 사용한다. 
+
+```bash
+command1 | command2 | command3
+```
+
+위와 같은 형태를 pipeline이라고 부르고, 이 pipeline을 통해 리눅스가 여러 명령어들의 액션을 하나로 합칠 수 있다.
+
+이전 커맨드를 기다리지 않고 multiple CPU/코어를 활용해 작업을 더 빠르게 끝낼 수 있고, 명령어 간 output을 파일에 저장할 필요가 없기 때문에 시간과 메모리 차원에서 이득이 있다. 특히 disk를 읽고 쓰는게 가장 bottleneck이 된다는 것을 생각해보면 pipeline은 아주 효율적.
+
+### Searching for Files
+
+원하는 파일을 빠르고 정확하게 찾는 것은 생산성에 큰 도움이 된다! 파일은 home 디렉토리에서 찾을 수도 있고, 시스템의 어떤 다른 공간/디렉토리에서도 찾을 수 있다.
+
+파일을 찾는데 주로 사용되는 툴은 `locate`와 `find` 이다. bash에서 와일드카드를 이용해 찾는 방법도 알아볼 것.
+
+### locate
+
+locate는 입력된 문자열을 포함하는 모든 파일/디렉토리를 찾는다. locate의 결과물은 꽤나 아주 길 수 있는데, 보다 relevant한 결과물을 얻기 위해서는 `grep` 명령어를 필터로 사용하면 좋다.
+
+grep은 locate의 결과물 중, 명시한 문자열을 포함한 결과물만 출력한다. 아래처럼 locate와 grep을 `|` 를 이용해 파이프로 연결해 한꺼번에 사용하는 것이 일반적.
+
+```bash
+locate zip | grep bin
+```
+
+위 명령어는 zip과 bin이 모두 들어가는 파일과 디렉토리를 찾아 출력한다.
+
+locate는 내부적으로 updatedb라는 related utility로 생성된 데이터베이스를 활용한다. 모든 리눅스 시스템이 이 updatedb를 하루에 한번 자동으로 실행하지만, 터미널에서 루트 권한으로 `updatedb`를 입력해서 수동으로 실행 할 수도 있다.
+
+### Wildcards and Matching File Names
+
+다양한 와일드카드를 이용해 특정 문자열을 포함하는 파일을 찾을 수 있다. 
+
+| **Wildcard** | **Result**                                                   |
+| ------------ | ------------------------------------------------------------ |
+| ?            | Matches any single character                                 |
+| *            | Matches any string of characters                             |
+| [set]        | Matches any character in the set of characters, for example [adf] will match any occurrence of a, d, or f |
+| [!set]       | Matches any character not in the set of characters           |
+
+정규식이랑 비슷하다.
+
+- `?` 와일드카드를 이용해서 파일을 찾을 때는 모르는 (한 개의) 문자열 대신 사용하면 된다. 예를 들어, ba로 시작하고, 3글자이고, 확장자가 out인 파일을 찾고 싶다면 `ba?.out` 처럼 사용하면 됨!
+-  `*` 와일드카드를 이용해서 파일을 찾을 때는 모르는 (여러) 문자열 대신 사용하면 된다. 만약 확장자가 `.out  `인 것만 기억난다면 `*.out` 처럼 사용하면 됨!
+
+파일 목록을 보여주는 `ls` 명령어에도 위의 와일드카드를 사용할 수 있다.
+
+```bash
+ls g??? # g로 시작하는 4글자 파일
+ls g[a-n]??? # g로 시작하고, 두번째 글자가 [a-n] 사이의 알파벳이고, 5글자인 파일
+```
+
