@@ -479,7 +479,19 @@ find -name "*.swp" -exec rm {} ';'
 아래와 같은 옵션들을 이용해서 찾을 수 있음!
 
 ```bash
-find / -ctime 3
-find / -size 0
+find / -ctime 3 # -ctime은 inde metadata가 마지막으로 변경된 시간이다. (i.e file ownership, permissons, ect)
+find / -atime 3 # -atime은 마지막으로 접근/읽힌 시간이다.
+find / -mtime 3 # -mtime은 마지막으로 수정/쓰인 시간이다.
+find / -size 0 # 기본적으로 사이즈는 512-byte blocks 단위다.
+```
+
+-ctime, -atime, -mtime 뒤의 시간 n은 "일" 수를 의미한다. `n`이면 정확히 n일, `+n`이면 n일보다 큰 숫자,  `-n`이면 n일보다 작은 숫자를 의미한다. `-cmin`, `-amin`, `-mmin` 명령어를 사용하면 시간의 단위를 일이 아니라 분으로 하는 것도 가능하다.
+
+사이즈 기준으로 검색할 때, 기본 단위는 512-byte blocks 이지만 바이트(c), 킬로바이트(k), 메가바이트(m), 기가바이트(G) 등을 사용해 단위를 명시할 수도 있고, 날짜와 유사하게 n, +n, -n 등으로 값의 범위를 지정해 줄 수도 있다.
+
+예를 들어 10MB 이상의 파일을 찾아 명령어를 실행하고 싶다면?
+
+```bash
+find / -size +10M -exec command {} ';'
 ```
 
