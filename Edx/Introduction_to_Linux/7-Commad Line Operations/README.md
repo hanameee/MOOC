@@ -138,7 +138,7 @@ command line으로 기초적인 작업들을 해봅시다.
 
 프로그램이 어디 있는지 찾기 위해서 사용할 수 있는 유틸리티는 **which**이다!
 
-<img src="../3-Linux Basics and System Startup/README.assets/image-20210318235532227.png" alt="image-20210318235532227" style="zoom:50%;" />
+<img src="README.assets/image-20210318235532227.png" alt="image-20210318235532227" style="zoom:50%;" />
 
 이런 식으로 특정 프로그램이 파일시스템 내 어디에 위치해 있는지를 정확히 찾을 수 있다. 만약 which가 찾지 못한다면, **whereis** 유틸리티가 대안이 될 수 있다! whereis는 where보다 더 넓은 범위에서 패키지를 찾기 때문이다.
 
@@ -528,7 +528,7 @@ apt가 Ubuntu Software Center이나 synaptic 등의 backend를 형성하고 있�
 
 기본적인 packaging 명령어들은 아래와 같다.
 
-<img src="image-20210414000924138.png" alt="image-20210414000924138" style="zoom:50%;" />
+<img src="README.assets/image-20210414000924138.png" alt="image-20210414000924138" style="zoom:50%;" />
 
 ### Low-Level Debian Package Management with dpkg
 
@@ -539,14 +539,14 @@ dpkg --list # 시스템에 설치된 모든 패키지를 리스트한다
 dpkg --list | grep bzip2 # 특정 패키지(i.e. bzip2)에 대한 정보를 보여준다
 ```
 
-![image-20210414001254834](image-20210414001254834.png)
+<img src="README.assets/image-20210414001254834.png" alt="image-20210414001924571" style="zoom: 67%;" />
 
 ```shell
 dpkg --listfiles bzip2 | less # 특정 패키지(i.e. bzip2)에 포함된 파일들을 보여준다.
 # less는 화면에 보여지는 만큼만 먼저 출력하기 위해
 ```
 
-<img src="image-20210414001800302.png" alt="image-20210414001800302" style="zoom:50%;" />
+<img src="README.assets/image-20210414001800302.png" alt="image-20210414001800302" style="zoom:50%;" />
 
 dpkg로 요 `bzip2` 를 삭제해보자.
 
@@ -554,7 +554,7 @@ dpkg로 요 `bzip2` 를 삭제해보자.
 sudo dpkg --remove bzip2
 ```
 
-<img src="image-20210414001924571.png" alt="image-20210414001924571" style="zoom: 67%;" />
+<img src="README.assets/image-20210414001924571.png" alt="image-20210414001924571" style="zoom: 67%;" />
 
 삭제가 안되는 걸 볼 수 있다! 그 이유는 bzip2에 의존성을 가지고 있는 패키지들 (ubuntu-minimal, lintian, file-roller) 이 있기 때문.
 
@@ -570,7 +570,7 @@ dpkg와 같은 low-level tool이 아니라, 추후 살펴볼 apt-get 같은 high
 sudo apt-cache search wget2
 ```
 
-<img src="image-20210414002314037.png" alt="image-20210414002314037" style="zoom: 67%;" />
+<img src="README.assets/image-20210414002314037.png" alt="image-20210414002314037" style="zoom: 67%;" />
 
 `wget2-dev` 패키지를 설치해보자!
 
@@ -578,7 +578,7 @@ sudo apt-cache search wget2
 sudo apt-get install wget2-dev
 ```
 
-<img src="image-20210414002521755.png" alt="image-20210414002521755" style="zoom: 67%;" />
+<img src="README.assets/image-20210414002521755.png" alt="image-20210414002521755" style="zoom:67%;" />
 
 설치하다 보면 필요한 base 패키지들을 추가 설치해야 한다는 프롬프트가 뜬다.
 
@@ -588,7 +588,7 @@ sudo apt-get install wget2-dev
 sudo apt-get remove wget2
 ```
 
-<img src="image-20210414002815353.png" alt="image-20210414002815353" style="zoom:50%;" />
+<img src="README.assets/image-20210414002815353.png" alt="image-20210414002815353" style="zoom:50%;" />
 
 wget2를 삭제하려고 하면 방금 설치한 `wget2-dev` 도 삭제된다는 프롬프트가 뜬다. wget2가 삭제되면 wget2-dev도 필요가 없기 때문에...!
 
