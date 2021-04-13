@@ -495,3 +495,110 @@ find / -size 0 # 기본적으로 사이즈는 512-byte blocks 단위다.
 find / -size +10M -exec command {} ';'
 ```
 
+## Installing Software
+
+### Package Management Systems on Linux
+
+리눅스 배포판의 코어한 부분과, 대부분의 add-on 소프트웨어는 **Package Management System**을 통해 설치된다.
+
+패키지 매니저에는 크게 2가지 family가 있다. Debian based 이랑 RPM! 두개의 시스템은 비록 호환은 안되지만, 비슷한 기능들을 제공한다.
+
+cli를 사용해 패키지 설치, 삭제, 검색을 하는 법을 알아본다.
+
+### Package Managers: Two Levels
+
+패키지 매니저는 2개 레벨로 작동한다.
+
+1. Low-level tool (i.e. dpkg, rpm) : **개별 패키지**를 unpack, 스크립트 실행, 소프트웨어를 올바르게 설치하는 등의 디테일을 관리
+2. High-level tool (i.e. apt, yum, dnf, zypper) : **여러 패키지들**의 그룹, 벤더로부터의 패키지 다운로드 등과, 의존성을 관리
+
+<img src="README.assets/Package_Managers.png" alt="Package Managers: Two Levels" style="zoom:50%;" />
+
+대부분의 경우 유저는 high-level tool만 신경쓰면 된다. high-level tool이 알아서 low-level tool을 호출하기 때문에.
+
+High-level tool의 기능 중 특히 중요한 것은 Dependency resolution이다! 유저 대신에 의존성을 다 찾아내고 설치해주기 때문이다. 다만, 한 개의 패키지를 설치해도 수백개의 의존성 패키지들이 설치될 수 있다는 점을 유의해야 한다.
+
+### Working With Different Package Management Systems
+
+**apt (Advanced Packaging Tool)** 은 Debian-based 시스템들에서 소프트웨어를 관리하는 package management system이다.
+
+apt가 Ubuntu Software Center이나 synaptic 등의 backend를 형성하고 있긴 하지만, apt의 native user interface는 command line이다! (apt, apt-get, apt-cache 등을 포함한다)
+
+그 외에도 yum (Red Hat family), zypper (SUSE/openSUSE family) 등이 package management system의 예시.
+
+기본적인 packaging 명령어들은 아래와 같다.
+
+<img src="image-20210414000924138.png" alt="image-20210414000924138" style="zoom:50%;" />
+
+### Low-Level Debian Package Management with dpkg
+
+Ubuntu에서 `dpkg` 를 사용해 low-level debian package management를 실습해보자.
+
+```shell
+dpkg --list # 시스템에 설치된 모든 패키지를 리스트한다
+dpkg --list | grep bzip2 # 특정 패키지(i.e. bzip2)에 대한 정보를 보여준다
+```
+
+![image-20210414001254834](image-20210414001254834.png)
+
+```shell
+dpkg --listfiles bzip2 | less # 특정 패키지(i.e. bzip2)에 포함된 파일들을 보여준다.
+# less는 화면에 보여지는 만큼만 먼저 출력하기 위해
+```
+
+<img src="image-20210414001800302.png" alt="image-20210414001800302" style="zoom:50%;" />
+
+dpkg로 요 `bzip2` 를 삭제해보자.
+
+```shell
+sudo dpkg --remove bzip2
+```
+
+<img src="image-20210414001924571.png" alt="image-20210414001924571" style="zoom: 67%;" />
+
+삭제가 안되는 걸 볼 수 있다! 그 이유는 bzip2에 의존성을 가지고 있는 패키지들 (ubuntu-minimal, lintian, file-roller) 이 있기 때문.
+
+dpkg와 같은 low-level tool이 아니라, 추후 살펴볼 apt-get 같은 high-level tool을 사용하면 이런 의존성을 관리하기가 더 쉬워진다.
+
+### High-Level Package Management with apt on Ubuntu
+
+이제 의존성을 이해하는 `apt-cache`, `apt-get` 과 같은 high-level 유틸리티를 이용해보자.
+
+먼저, wget2라는 문자열을 포함한 패키지들을 찾아보자.
+
+```shell
+sudo apt-cache search wget2
+```
+
+<img src="image-20210414002314037.png" alt="image-20210414002314037" style="zoom: 67%;" />
+
+`wget2-dev` 패키지를 설치해보자!
+
+```shell
+sudo apt-get install wget2-dev
+```
+
+<img src="image-20210414002521755.png" alt="image-20210414002521755" style="zoom: 67%;" />
+
+설치하다 보면 필요한 base 패키지들을 추가 설치해야 한다는 프롬프트가 뜬다.
+
+이제  `wget2` 를 삭제해보자!
+
+```shell
+sudo apt-get remove wget2
+```
+
+<img src="image-20210414002815353.png" alt="image-20210414002815353" style="zoom:50%;" />
+
+wget2를 삭제하려고 하면 방금 설치한 `wget2-dev` 도 삭제된다는 프롬프트가 뜬다. wget2가 삭제되면 wget2-dev도 필요가 없기 때문에...!
+
+이렇듯 high-level tool을 이용하면 보다 편리하게 패키지 관리를 할 수 있다.
+
+## Learning Objectives (Review)
+
+이제 아래와 같은 것들을 할 수 있다.
+
+- linux에서 cli를 이용해 작업을 수행할 수 있다.
+- 파일을 찾을 수 있다.
+- 파일을 생성하고 관리할 수 있다.
+- 소프트웨어를 설치하고 업데이트 할 수 있다.
