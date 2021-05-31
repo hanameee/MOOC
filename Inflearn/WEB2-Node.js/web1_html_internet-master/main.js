@@ -2,6 +2,7 @@ const http = require("http");
 const url = require("url");
 const fs = require("fs");
 const qs = require("querystring");
+const path = require("path");
 const template = require("./lib/template");
 
 const app = http.createServer(function (request, response) {
@@ -71,7 +72,8 @@ const app = http.createServer(function (request, response) {
         });
     } else if (pathname === "/update") {
         fs.readdir("./data", (err, files) => {
-            fs.readFile(`data/${queryData.id}`, "utf8", (err, description) => {
+            const filteredId = path.parse(queryData.id).base;
+            fs.readFile(`data/${filteredId}`, "utf8", (err, description) => {
                 const title = queryData.id;
                 const list = template.list(files);
                 const html = template.html(
@@ -115,9 +117,10 @@ const app = http.createServer(function (request, response) {
         request.on("end", () => {
             const post = qs.parse(body);
             const id = post.id;
+            const filteredId = path.parse(id).base;
             const title = post.title;
             const description = post.description;
-            fs.rename(`data/${id}`, `data/${title}`, (err) => {
+            fs.rename(`data/${filteredId}`, `data/${title}`, (err) => {
                 fs.writeFile(`data/${title}`, description, "utf8", (err) => {
                     response.writeHead(302, { Location: `/?id=${title}` });
                     response.end();
@@ -132,7 +135,8 @@ const app = http.createServer(function (request, response) {
         request.on("end", () => {
             const post = qs.parse(body);
             const id = post.id;
-            fs.unlink(`data/${id}`, (err) => {
+            const filteredId = path.parse(id).base;
+            fs.unlink(`data/${filteredId}`, (err) => {
                 response.writeHead(302, { Location: `/` });
                 response.end();
             });
