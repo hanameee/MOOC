@@ -2,37 +2,9 @@ const http = require("http");
 const url = require("url");
 const fs = require("fs");
 const qs = require("querystring");
+const template = require("./lib/template");
 
-const templateHTML = (title, list, body, control) => {
-    return `
-  <!doctype html>
-  <html>
-  <head>
-    <title>WEB1 - ${title}</title>
-    <meta charset="utf-8">
-  </head>
-  <body>
-    <h1><a href="/">WEB</a></h1>
-    ${list}
-    ${control}
-    ${body}
-  </body>
-  </html>
-  `;
-};
-
-const templateList = (files) => {
-    let list = "<ul>";
-    let i = 0;
-    while (i < files.length) {
-        list += `<li><a href="/?id=${files[i]}">${files[i]}</a></li>`;
-        i += 1;
-    }
-    list += "</ul>";
-    return list;
-};
-
-var app = http.createServer(function (request, response) {
+const app = http.createServer(function (request, response) {
     var _url = request.url;
     var queryData = url.parse(_url, true).query;
     var pathname = url.parse(_url, true).pathname;
@@ -41,15 +13,15 @@ var app = http.createServer(function (request, response) {
             fs.readdir("./data", (err, files) => {
                 const title = "Welcome";
                 const description = "Hello, Node.js";
-                const list = templateList(files);
-                const template = templateHTML(
+                const list = template.list(files);
+                const html = template.html(
                     title,
                     list,
                     `<h2>${title}</h2>${description}`,
                     `<a href="/create">create</a>`
                 );
                 response.writeHead(200);
-                response.end(template);
+                response.end(html);
             });
         } else {
             fs.readdir("./data", (err, files) => {
@@ -58,8 +30,8 @@ var app = http.createServer(function (request, response) {
                     "utf8",
                     (err, description) => {
                         const title = queryData.id;
-                        const list = templateList(files);
-                        const template = templateHTML(
+                        const list = template.list(files);
+                        const html = template.html(
                             title,
                             list,
                             `<h2>${title}</h2>${description}`,
@@ -71,7 +43,7 @@ var app = http.createServer(function (request, response) {
                             </form>`
                         );
                         response.writeHead(200);
-                        response.end(template);
+                        response.end(html);
                     }
                 );
             });
@@ -79,8 +51,8 @@ var app = http.createServer(function (request, response) {
     } else if (pathname === "/create") {
         fs.readdir("./data", (err, files) => {
             const title = "WEB - create";
-            const list = templateList(files);
-            const template = templateHTML(
+            const list = template.list(files);
+            const html = template.html(
                 title,
                 list,
                 `<form action="/create_process" method="post">
@@ -95,14 +67,14 @@ var app = http.createServer(function (request, response) {
                 ""
             );
             response.writeHead(200);
-            response.end(template);
+            response.end(html);
         });
     } else if (pathname === "/update") {
         fs.readdir("./data", (err, files) => {
             fs.readFile(`data/${queryData.id}`, "utf8", (err, description) => {
                 const title = queryData.id;
-                const list = templateList(files);
-                const template = templateHTML(
+                const list = template.list(files);
+                const html = template.html(
                     title,
                     list,
                     `<form action="/update_process" method="post">
@@ -118,7 +90,7 @@ var app = http.createServer(function (request, response) {
                     ""
                 );
                 response.writeHead(200);
-                response.end(template);
+                response.end(html);
             });
         });
     } else if (pathname === "/create_process") {
