@@ -35,3 +35,5 @@ response.end(fs.readFileSync(__dirname + url));
 
 Node.js(+php, 장고 등)는 아파치, Nginx와는 달리 이렇게 프로그래밍적으로 클라이언트에게 응답을 동적으로 만들어줘서 보내주는 일을 할 수 있다.
 
+## Node.js의 파일 I/O
+
