@@ -3,11 +3,12 @@ const fs = require("fs");
 const template = require("./lib/template.js");
 const path = require("path");
 const sanitizeHtml = require("sanitize-html");
-const qs = require("querystring");
 const bodyParser = require("body-parser");
+const compression = require("compression");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(compression());
 
 app.get("/", (req, res) => {
     fs.readdir("./data", (error, filelist) => {
