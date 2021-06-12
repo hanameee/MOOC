@@ -9,57 +9,56 @@ const compression = require("compression");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
-
-app.get("/", (req, res) => {
+// custom middleware
+app.get("*", (req, res, next) => {
     fs.readdir("./data", (error, filelist) => {
-        const title = "Welcome";
-        const description = "Hello, Node.js";
-        const list = template.list(filelist);
-        const html = template.HTML(
-            title,
-            list,
-            `<h2>${title}</h2>${description}`,
-            `<a href="/create">create</a>`
-        );
-        res.send(html);
+        req.list = filelist;
+        next();
     });
 });
 
+app.get("/", (req, res) => {
+    const title = "Welcome";
+    const description = "Hello, Node.js";
+    const list = template.list(req.list);
+    const html = template.HTML(
+        title,
+        list,
+        `<h2>${title}</h2>${description}`,
+        `<a href="/create">create</a>`
+    );
+    res.send(html);
+});
+
 app.get("/page/:id", (req, res) => {
-    fs.readdir("./data", (error, filelist) => {
-        const filteredId = path.parse(req.params.id).base;
-        console.log(filteredId);
-        fs.readFile(`data/${filteredId}`, "utf8", (err, description) => {
-            const title = req.params.id;
-            const sanitizedTitle = sanitizeHtml(title);
-            const sanitizedDescription = sanitizeHtml(description, {
-                allowedTags: ["h1"],
-            });
-            const list = template.list(filelist);
-            const html = template.HTML(
-                sanitizedTitle,
-                list,
-                `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
-                ` <a href="/create">create</a>
+    const title = req.params.id;
+    const description = req.params.id;
+    const sanitizedTitle = sanitizeHtml(title);
+    const sanitizedDescription = sanitizeHtml(description, {
+        allowedTags: ["h1"],
+    });
+    const list = template.list(req.list);
+    const html = template.HTML(
+        sanitizedTitle,
+        list,
+        `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
+        ` <a href="/create">create</a>
                     <a href="/update/${sanitizedTitle}">update</a>
                     <form action="/delete" method="post">
                       <input type="hidden" name="id" value="${sanitizedTitle}">
                       <input type="submit" value="delete">
                     </form>`
-            );
-            res.send(html);
-        });
-    });
+    );
+    res.send(html);
 });
 
 app.get("/create", (req, res) => {
-    fs.readdir("./data", (error, filelist) => {
-        const title = "WEB - create";
-        const list = template.list(filelist);
-        const html = template.HTML(
-            title,
-            list,
-            `
+    const title = "WEB - create";
+    const list = template.list(req.list);
+    const html = template.HTML(
+        title,
+        list,
+        `
               <form action="/create" method="post">
                 <p><input type="text" name="title" placeholder="title"></p>
                 <p>
@@ -70,10 +69,9 @@ app.get("/create", (req, res) => {
                 </p>
               </form>
             `,
-            ""
-        );
-        res.send(html);
-    });
+        ""
+    );
+    res.send(html);
 });
 
 app.post("/create", (req, res) => {
@@ -87,15 +85,14 @@ app.post("/create", (req, res) => {
 });
 
 app.get("/update/:id", (req, res) => {
-    fs.readdir("./data", function (error, filelist) {
-        var filteredId = path.parse(req.params.id).base;
-        fs.readFile(`data/${filteredId}`, "utf8", function (err, description) {
-            var title = req.params.id;
-            var list = template.list(filelist);
-            var html = template.HTML(
-                title,
-                list,
-                `
+    var filteredId = path.parse(req.params.id).base;
+    fs.readFile(`data/${filteredId}`, "utf8", function (err, description) {
+        var title = req.params.id;
+        var list = template.list(req.list);
+        var html = template.HTML(
+            title,
+            list,
+            `
             <form action="/update" method="post">
               <input type="hidden" name="id" value="${title}">
               <p><input type="text" name="title" placeholder="title" value="${title}"></p>
@@ -107,10 +104,9 @@ app.get("/update/:id", (req, res) => {
               </p>
             </form>
             `,
-                `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
-            );
-            res.send(html);
-        });
+            `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
+        );
+        res.send(html);
     });
 });
 
