@@ -4,9 +4,11 @@ const bodyParser = require("body-parser");
 const compression = require("compression");
 const indexRouter = require("./routes/index");
 const topicRouter = require("./routes/topic");
+const helmet = requre("helmet");
 
 const app = express();
 
+app.use(helmet());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
