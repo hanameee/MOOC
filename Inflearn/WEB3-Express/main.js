@@ -32,26 +32,32 @@ app.get("/", (req, res) => {
     res.send(html);
 });
 
-app.get("/page/:id", (req, res) => {
-    const title = req.params.id;
-    const description = req.params.id;
-    const sanitizedTitle = sanitizeHtml(title);
-    const sanitizedDescription = sanitizeHtml(description, {
-        allowedTags: ["h1"],
+app.get("/page/:id", (req, res, next) => {
+    const filteredId = path.parse(req.params.id).base;
+    fs.readFile(`data/${filteredId}`, "utf8", (err, description) => {
+        if (err) {
+            next(err);
+        } else {
+            const title = req.params.id;
+            const sanitizedTitle = sanitizeHtml(title);
+            const sanitizedDescription = sanitizeHtml(description, {
+                allowedTags: ["h1"],
+            });
+            const list = template.list(req.list);
+            const html = template.HTML(
+                sanitizedTitle,
+                list,
+                `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
+                ` <a href="/create">create</a>
+                            <a href="/update/${sanitizedTitle}">update</a>
+                            <form action="/delete" method="post">
+                              <input type="hidden" name="id" value="${sanitizedTitle}">
+                              <input type="submit" value="delete">
+                            </form>`
+            );
+            res.send(html);
+        }
     });
-    const list = template.list(req.list);
-    const html = template.HTML(
-        sanitizedTitle,
-        list,
-        `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
-        ` <a href="/create">create</a>
-                    <a href="/update/${sanitizedTitle}">update</a>
-                    <form action="/delete" method="post">
-                      <input type="hidden" name="id" value="${sanitizedTitle}">
-                      <input type="submit" value="delete">
-                    </form>`
-    );
-    res.send(html);
 });
 
 app.get("/create", (req, res) => {
@@ -131,6 +137,16 @@ app.post("/delete", (req, res) => {
     fs.unlink(`data/${filteredId}`, function (error) {
         res.redirect("/");
     });
+});
+
+app.use((req, res, next) => {
+    res.status(404).send("Sorry can't find that!");
+});
+
+// 4개의 인수를 갖는 오류 처리 미들웨어
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send("Something is broke!");
 });
 
 app.listen(3000, () => console.log("Example app listening on port 3000!"));
