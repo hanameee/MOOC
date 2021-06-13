@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const compression = require("compression");
 
 const app = express();
+
+app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
 // custom middleware
@@ -24,7 +26,7 @@ app.get("/", (req, res) => {
     const html = template.HTML(
         title,
         list,
-        `<h2>${title}</h2>${description}`,
+        `<h2>${title}</h2>${description}<img src="/images/hello.jpg" style="width:500px; display:block; margin:10px"></img>`,
         `<a href="/create">create</a>`
     );
     res.send(html);
