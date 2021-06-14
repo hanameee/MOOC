@@ -100,3 +100,122 @@ OS는 어떤 유저가 어떤 프로세스를 시작했는지를 각 유저에 �
 프로세스의 우선순위는 **nice value** 또는 niceness를 명시함으로써 설정할 수 있다. nice value가 낮을수록 (최하 -20) 우선순위가 높고, 높을 수록 (최대 +19) 우선순위가 낮다.
 
 또한, time-sensitive한 작업에는 **real-time priority**를 할당할 수 있는데, 이건 아주 높은 우선순위를 의미한다. 
+
+## Process Metrics and Process Control
+
+### Load Averages
+
+Load Average란 특정 시간동안의 load number의 평균이다.
+
+- CPU에 현재 실행되고 있는 프로세스
+- 실행가능하지만, CPU가 이용가능해지기를 기다리는 중인 프로세스
+- Sleeping 중인 프로세스 (e.g. I/O 대기하는 중)
+
+`w`, `top`, `uptime` 명령어를 이용해 load average를 볼 수 있다.
+
+### Interpreting Load Averages
+
+Load Average는 3가지 숫자를 이용해서 표시되는데, 각각의 숫자의 의미는 아래와 같다.
+
+- 첫번째 숫자 (아래 사진 기준 0.52) : **지난 1분**간 시스템이 평균적으로 52% utilize 되었다
+- 두번째 숫자 (아래 사진 기준 0.16) : **지난 5분**간 시스템이 평균적으로 16% utilize 되었다
+- 세번째 숫자 (아래 사진 기준 0.06) : **지난 15분**간 시스템이 평균적으로 6% utilize 되었다
+
+![image-20210505224816253](image-20210505224816253.png)
+
+1.00 이라는 수치는 single-CPU 시스템이 평균적으로 100% utilized 되었다는 것, 1.00 이상의 수치는 시스템이 over-utilized 되었다는 것.
+
+만약 CPU가 하나 이상이라면? Load average를 CPU의 갯수로 나눠보면 됨. 쿼드코어인 컴퓨터의 Load average가 4.00이라면, 4.00/4 = 평균적으로 100%가 n분 동안 utilized 되었다는 의미!
+
+[MAC에서 CPU 갯수 확인하기]
+
+```bash
+# cpu 관련 정보 몽땅 가져오기
+sysctl -a | grep cpu
+# 코어 개수
+sysctl machdep.cpu.core_count
+# 스레드 개수 (하이퍼쓰레딩 기술 적용 중으로 코어 개수의 2배)
+sysctl machdep.cpu.thread_count
+```
+
+### Background and Foreground Processes
+
+리눅스는 background, foreground job 프로세싱을 지원한다. 여기서 job이란 터미널 윈도우에서 launch된 커맨드를 의미함!
+
+Foreground job은 쉘에서 바로 실행되고, foreground job이 실행되는 동안은 이 job이 완료될때까지 다른 작업들은 shell access를 기다려야 한다. 빨리 끝나는 작업이라면 몰라도 오래 걸리는 작업이라면 성능에 불리할 수 있음.
+
+이럴 경우, job을 background에서 실행하고, shell을 다른 작업들을 위해 free 할 수 있다. background job은 더 낮은 우선순위로 실행될 것이고, background job이 실행되는 와중에도 다른 job들이 스무스하게 실행될 수 있음.
+
+모든 작업은 기본적으로 foreground에서 실행되나, 커맨드의 마지막에 `&` 를 입력해서 backgound에서 실행할 수 있다. (e.g. `updatedb &`)
+
+foreground job을 정지하기 위해서는 `CTRL-Z`를, 취소하기 위해서는 `CTRL-C`를 사용하고, `bg`, `fg` 명령어를 통해 프로세스를 각각 background, foreground에서 실행할 수 있다.
+
+#### 실습해보기
+
+우분투 환경에서 background, foreground jobs를 실습해보자😀
+
+1) 텍스트 편집기인 `gedit` 을 연다
+
+```bash
+gedit somefile
+```
+
+이렇게 하면 gedit이 **foreground에서 실행**된다. 터미널 윈도우에 뭔가 입력을 할 수는 있지만, input이 처리되지는 않는다. (shell doesn't pay attention to input)
+
+<img src="image-20210615001951078.png" alt="image-20210615001951078" style="zoom:50%;" />
+
+2) 터미널로 가서, `ctrl-z` 로 foreground job (gedit)을 정지한다. 이제 gedit는 정지되었기 때문에 더이상 input을 입력할 수 없다.
+
+<img src="image-20210615002227381.png" alt="image-20210615002227381" style="zoom:50%;" />
+
+`jobs -l`을 통해 gedit이 정지된 것을 확인할 수 있다.
+
+<img src="image-20210615002320114.png" alt="image-20210615002320114" style="zoom:50%;" />
+
+3) 가장 최근 job을 background로 실행한다.
+
+```bash
+bg
+```
+
+가장 최근 job이 gedit이기 때문에, 정지되었던 gedit이 background로 실행되어 입력 가능해진 것을 확인할 수 있다.
+
+또한, background로 실행되었으므로 shell에도 명령어 입력이 가능하다.
+
+<img src="image-20210615002559985.png" alt="image-20210615002559985" style="zoom:50%;" />
+
+4) 가장 최근 job (gedit)을 foreground로 실행한다.
+
+```bash
+fg
+```
+
+<img src="image-20210615002642756.png" alt="image-20210615002642756" style="zoom:50%;" />
+
+다시 처음 상태와 같이, 터미널 윈도우에는 명령을 내리지 못하고, gedit만 작동하는 상황이 된다.
+
+5) 다시 gedit을 정지하고, (ctrl-z) `jobs -l` 로 gedit의 PID를 확인한 후 kill한다.
+
+```bash
+kill -9 [PID]
+```
+
+<img src="image-20210615002902879.png" alt="image-20210615002902879" style="zoom:50%;" />
+
+### Managing Jobs
+
+`jobs` 유틸리티는 background에서 실행중인 모든 jobs를 보여준다.
+
+<img src="image-20210505235228671.png" alt="image-20210505235228671" style="zoom:50%;" />
+
+위 사진처럼 job ID, state, command name을 보여준다.
+
+```bash
+jobs -l
+```
+
+<img src="image-20210615000542667.png" alt="image-20210615000542667" style="zoom:50%;" />
+
+`-l` 플래그를 붙이면 background jobs에 PID 정보까지 더해서 보여준다. 
+
+background jobs는 terminal window에 연결되어 있어서, 로그 오프를 하면 해당 윈도우에서 시작한 background jobs는 더 이상  `jobs` 유틸리티에서 보여지지 않게 된다.
