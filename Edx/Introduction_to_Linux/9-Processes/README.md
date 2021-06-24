@@ -219,3 +219,135 @@ jobs -l
 `-l` 플래그를 붙이면 background jobs에 PID 정보까지 더해서 보여준다. 
 
 background jobs는 terminal window에 연결되어 있어서, 로그 오프를 하면 해당 윈도우에서 시작한 background jobs는 더 이상  `jobs` 유틸리티에서 보여지지 않게 된다.
+
+##Listing Processes: ps and top
+
+### The ps Command (System V Style)
+
+`ps` 명령어는 PID로 구분된, 현재 실행되고 있는 프로세스들에 대한 정보를 제공한다.
+
+<img src="image-20210625004753411.png" alt="image-20210625004753411" style="zoom:50%;" />
+
+프로세스 정보들에 대한 반복적인 업데이트를 받으려면 아래와 같은  `top`  명령어나
+
+<img src="image-20210625005030923.png" alt="image-20210625005030923" style="zoom:50%;" />
+
+`htop`, `atop` 등의 variants를 설치해서 사용하면 된다. 또는 운영체제 배포판에서 제공하는 graphical system monitor 앱을 사용해도 된다.
+
+`ps` 에 여러 옵션을 넘길 수 있는데,
+
+- 어떤 task를 검사할건지
+- 어떤 정보를 보여줄건지
+- output이 어떤 포맷으로 보이게끔 할지
+
+만약 옵션이 주어지지 않으면, `ps` 는 기본적으로 현재 shell에서 실행되는 모든 프로세스를 보여준다.
+
+`-u` 옵션으로는 특정 username에 할당된 프로세스 정보를 보여준다.
+
+`-ef` 옵션으로는 시스템에 있는 모든 프로세스를 full detail로 보여준다. `eLf` 는 한단계 더 나아가서 모든 thread에 대한 정보를 한줄씩 보여준다.
+
+### The ps Command (BSD Style)
+
+`ps` 는 UNIX의 BSD variety로부터 유래된 다른 스타일의 옵션들도 있는데, 위의 `System V` 스타일과는 달리 대시 (`-`) 없이 옵션을 명시할 수 있다.
+
+- `ps aux` : 모든 user에 대한 프로세스를 보여준다
+- `ps axo` : 어떤 속성을 보고 싶은지 명시할 수 있다 (e.g. ps axo stat,priority,pid,pcpu,comm)
+
+### The Process Tree
+
+`pstree` 명령어로 현재 시스템에서 실행중인 프로세스들의 목록을 트리 형식으로 볼 수 있다. 트리 형식이기에 부모 프로세스와, 자식 프로세스 같은 프로세스 간의 관계를 파악할 수 있다.
+
+<img src="image-20210625011059878.png" alt="image-20210625011059878" style="zoom:50%;" />
+
+tread는 중괄호 `{}` 로 표시되고, 프로세스의 반복된 entries는 표시되지 않는다.
+
+### top
+
+시스템의 정적인 상태를 파악하는 것도 유용하지만, 시간에 따라 시스템의 성능을 모니터링하려면 `top` 명령어가 유용하다.
+
+`top` 은 default로 2초에 한번씩 실시간으로 업데이트를 하면서 시스템의 상태를 보여준다. top은 가장 많은 CPU 사이클과 메모리를 소비하는 프로세스들을 강조해서 보여줄 수도 있다 :D
+
+#### top 정보 분석
+
+![image-20210625012106045](image-20210625012106045.png)
+
+#### 첫번째 줄
+
+`top` 의 첫번째 줄은 아래와 같은 정보를 보여준다.
+
+- System uptime
+- 시스템에 로그인되어 있는 유저의 수
+- load average: 시스템이 얼마나 바쁜지 나타내는 지표. `1.00` 은 하나의 CPU가 완전히 subscribed 되어 있음을 의미함.
+
+#### 두번째 줄
+
+`top` 의 두번째 줄은 아래와 같은 정보를 보여준다.
+
+- 프로세스의 전체 갯수
+- running, sleeping, stopped, zombie 프로세스의 갯수
+
+Load average와 running 프로세스의 갯수를 비교해보면 시스템이 capacity에 도달했는지, 혹은 특정 유저가 너무 많은 프로세스를 실행중인지를 판단할 수 있다.
+
+#### 세번째 줄
+
+`top` 의 세번째 줄은 아래와 같은 정보를 보여준다.
+
+- CPU time이 user(us)과 kernel(sy)간에 어떻게 나눠지고 있는지 %로 보여줌
+- ni: 낮은 우선순위로 실행되고 있는 user jobs의 비율 (niceness)
+- id: idle mode (load average가 높다면 id가 낮아야 함)
+- wa: I/O 대기중인 jobs의 비율
+- hi: 하드웨어 interrupt
+- si: 소프트웨어 interrupt
+- st: steal time - idle CPU time을 다른 uses를 위해 남겨두는 vm에서 주로 사용됨
+
+#### 네번째, 다섯번째 줄
+
+`top` 의 네번째, 다섯번째 줄은 아래와 같은 정보를 보여준다.
+
+- 4번째 줄: 물리 메모리 (RAM)의 usage
+- 5번쨰 줄: Swap 공간의 usage
+
+4,5번째줄 모두 total memory, used memory, free space에 대한 정보를 보여준다.
+
+좋은 시스템 성능을 위해서는 메모리 사용량을 모니터링 하는게 중요하다!_!
+
+물리 메모리가 다 사용되면, 시스템은 확장된 메모리 공간으로 swap space(하드드라이브에 있는 임시 저장 공간)를 사용한다. 디스크에 접근하는건 RAM보다 훨씬 느리므로 시스템 성능에 악영향을 준다.
+
+시스템이 swap 공간을 자주 사용한다면, swap 공간을 더 추가할 수는 있다. 하지만 가급적 물리 메모리를 추가하는 것이 더 좋은 방법으로 고려되어야..!
+
+#### 프로세스 목록
+
+프로세스에 대한 정보를 보여주는 부분은 기본적으로 CPU 사용량이 많은 프로세스 순서로 보여지고, 아래와 같은 정보들을 볼 수 있다.
+
+- Process Identification Number (PID)
+- Process owner (USER)
+- Priority (PR) and nice values (NI)
+- Virtual (VIRT), physical (RES), and shared memory (SHR)
+- Status (S)
+- Percentage of CPU (CPU) and memory (MEM) used
+- Execution time (TIME+)
+- Command (COMMAND).
+
+### Interactive Keys with top
+
+`top` 은 정보를 리포팅하는 것 외에도, 프로세스 모니터링 + 컨트롤링을 위해 interactive하게 사용될 수 있다.
+
+`top` 이 터미널에서 정보를 보여주는 동안, 한글자짜리 커맨드를 입력해서 top의 behavior을 변경할 수 있다.
+
+CPU 사용량, 메모리 사용량이 가장 높은 프로세스를 보여주게 하거나, 현재 실행중인 프로세스의 우선순위를 변경하거나, 프로세스를 정지/kill하는 것도 가능하다.
+
+ 
+
+| **Command** | **Output**                                                |
+| ----------- | --------------------------------------------------------- |
+| t           | Display or hide summary information (rows 2 and 3)        |
+| m           | Display or hide memory information (rows 4 and 5)         |
+| A           | Sort the process list by top resource consumers           |
+| r           | Renice (change the priority of) a specific processes      |
+| k           | Kill a specific process                                   |
+| f           | Enter the top configuration screen                        |
+| o           | Interactively select a new sort order in the process list |
+
+<img src="image-20210625014228020.png" alt="image-20210625014228020" style="zoom:50%;" />
+
+예를 들어 `k` 를 입력하면 위 사진처럼 kill할 프로세스의 pid를 입력하라는 프롬프트가 뜬다.
