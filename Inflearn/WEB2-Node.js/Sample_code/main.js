@@ -5,6 +5,34 @@ const qs = require("querystring");
 const path = require("path");
 const template = require("./lib/template");
 const sanitizeHtml = require("sanitize-html");
+const cookie = require("cookie");
+
+const EMAIL = "hanameee@gmail.com";
+const PASSWORD = "1111";
+
+const authIsOwner = (request, response) => {
+    let isOwner = false;
+    const cookies = request.headers.cookie
+        ? cookie.parse(request.headers.cookie)
+        : {};
+    if (cookies.email === EMAIL && cookies.password === PASSWORD) {
+        isOwner = true;
+    }
+    return isOwner;
+};
+
+const authStatusUI = (request, response) => {
+    return authIsOwner(request, response)
+        ? '<a href="/logout_process">logout</a>'
+        : '<a href="/login">login</a>';
+};
+
+const checkLoggedIn = (request, response) => {
+    if (authIsOwner(request, response) === false) {
+        response.end("Needs Login!");
+        return false;
+    }
+};
 
 const app = http.createServer(function (request, response) {
     var _url = request.url;
@@ -20,7 +48,8 @@ const app = http.createServer(function (request, response) {
                     title,
                     list,
                     `<h2>${title}</h2>${description}`,
-                    `<a href="/create">create</a>`
+                    `<a href="/create">create</a>`,
+                    authStatusUI(request, response)
                 );
                 response.writeHead(200);
                 response.end(html);
@@ -44,7 +73,8 @@ const app = http.createServer(function (request, response) {
                             <form action="/delete_process" method="post">
                                 <input type="hidden" name="id" value="${sanitizedTitle}">
                                 <input type="submit" value="delete">
-                            </form>`
+                            </form>`,
+                            authStatusUI(request, response)
                         );
                         response.writeHead(200);
                         response.end(html);
@@ -53,6 +83,7 @@ const app = http.createServer(function (request, response) {
             });
         }
     } else if (pathname === "/create") {
+        if (!checkLoggedIn(request, response)) return false;
         fs.readdir("./data", (err, files) => {
             const title = "WEB - create";
             const list = template.list(files);
@@ -68,12 +99,14 @@ const app = http.createServer(function (request, response) {
                 <input type="submit">
                 </p>
                 </form>`,
-                ""
+                "",
+                authStatusUI(request, response)
             );
             response.writeHead(200);
             response.end(html);
         });
     } else if (pathname === "/update") {
+        if (!checkLoggedIn(request, response)) return false;
         fs.readdir("./data", (err, files) => {
             const filteredId = path.parse(queryData.id).base;
             fs.readFile(`data/${filteredId}`, "utf8", (err, description) => {
@@ -92,7 +125,8 @@ const app = http.createServer(function (request, response) {
                     <input type="submit">
                     </p>
                     </form>`,
-                    ""
+                    "",
+                    authStatusUI(request, response)
                 );
                 response.writeHead(200);
                 response.end(html);
@@ -131,6 +165,7 @@ const app = http.createServer(function (request, response) {
             });
         });
     } else if (pathname === "/delete_process") {
+        if (!checkLoggedIn(request, response)) return false;
         let body = "";
         request.on("data", (data) => {
             body += data;
@@ -143,6 +178,60 @@ const app = http.createServer(function (request, response) {
                 response.writeHead(302, { Location: `/` });
                 response.end();
             });
+        });
+    } else if (pathname === "/login") {
+        fs.readdir("./data", (err, files) => {
+            const title = "Login";
+            const list = template.list(files);
+            const html = template.html(
+                title,
+                list,
+                `<form action="login_process" method="post">
+                <p><input type="text" name="email" placeholder="email"></p>
+                <p><input type="password" name="password" placeholder="password"></p>
+                <p><input type="submit"></p>
+                </form>`,
+                `<a href="/create">create</a>`
+            );
+            response.writeHead(200);
+            response.end(html);
+        });
+    } else if (pathname === "/login_process") {
+        let body = "";
+        request.on("data", (data) => {
+            body += data;
+        });
+        request.on("end", () => {
+            const post = qs.parse(body);
+            if (post.email === EMAIL && post.password === PASSWORD) {
+                response.writeHead(302, {
+                    "Set-Cookie": [
+                        `email=${post.email}`,
+                        `password=${post.password}`,
+                        `nickname=hanameee`,
+                    ],
+                    Location: `/`,
+                });
+                response.end();
+            } else {
+                response.end("who?");
+            }
+        });
+    } else if (pathname === "/logout_process") {
+        let body = "";
+        request.on("data", (data) => {
+            body += data;
+        });
+        request.on("end", () => {
+            response.writeHead(302, {
+                "Set-Cookie": [
+                    `email=; Max-Age=0`,
+                    `password=; Max-Age=0`,
+                    `nickname=; Max-Age=0`,
+                ],
+                Location: `/`,
+            });
+            response.end();
         });
     } else {
         response.writeHead(404);
