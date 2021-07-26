@@ -1,14 +1,16 @@
-# 쿠키와 인증
+# 인증
+
+##쿠키와 인증
 
 수업 링크: https://opentutorials.org/course/3387/21740
 
-## HTTP 쿠키
+### HTTP 쿠키 🍪
 
-### 정의
+#### 정의
 
 쿠키는 stateless HTTP 프로토콜에서 상태정보를 기억하기 위해 사용하는 수단 중 하나로, **서버가 사용자의 웹 브라우저에 전송하는 작은 데이터 조각**이다. 브라우저는 쿠키를 저장해 놓았다가, 동일한 서버에 재 요청 시 쿠키를 함께 전송한다. 쿠키를 사용하면 서버는 두 요청이 동일한 브라우저에서 들어왔는지를 판단할 수 있다.
 
-### 쿠키의 목적
+#### 쿠키의 목적
 
 1) 세션 관리: 서버에 저장해야 할 로그인, 장바구니 등의 정보 관리
 
@@ -18,7 +20,7 @@
 
 출처: https://developer.mozilla.org/ko/docs/Web/HTTP/Cookies
 
-### 쿠키 생성하기
+#### 쿠키 생성하기
 
 서버가 응답할 때 `Set-Cookie` 헤더를 전송함으로써 쿠키를 만들 수 있다.
 
@@ -38,13 +40,13 @@ http.createServer((req, res) => {
 
 웹서버에서 응답할 때 쿠키를 구워서 보내고,
 
-<img src="Cookie_and_Authentication.assets/image-20210724225213162.png" alt="image-20210724225213162" style="zoom:50%;" />
+<img src="Authentication.assets/image-20210724225213162.png" alt="image-20210724225213162" style="zoom:50%;" />
 
 이후부터는 브라우저에서 요청 코드에 구워진 쿠키를 함께 전송하는 것을 알 수 있다.
 
-<img src="Cookie_and_Authentication.assets/image-20210724225520325.png" alt="image-20210724225520325" style="zoom:50%;" />
+<img src="Authentication.assets/image-20210724225520325.png" alt="image-20210724225520325" style="zoom:50%;" />
 
-### 쿠키 읽기
+#### 쿠키 읽기
 
 브라우저에서 응답에 함께 전송한 쿠키를 웹서버에서는 어떻게 받을까?
 
@@ -52,21 +54,21 @@ http.createServer((req, res) => {
 
 이 작업을 직접 해도 되지만... 이걸 해주는 [cookie](https://www.npmjs.com/package/cookie) 모듈을 활용하자 :D
 
-### 쿠키의 활용
+#### 쿠키의 활용
 
 쿠키를 활용하는 실 사례를 좀 더 확인해보자!
 
 [Mozilla](https://developer.mozilla.org/)에서는 언어 옵션을 바꿀 수 있는데, 이 기능에서 개인화를 위해 쿠키를 사용한다.
 
-<img src="Cookie_and_Authentication.assets/image-20210724231951535.png" alt="image-20210724231951535" style="zoom:50%;" />
+<img src="Authentication.assets/image-20210724231951535.png" alt="image-20210724231951535" style="zoom:50%;" />
 
 위처럼 선호 언어를 변경하고 개발자도구의 Application 창을 열어보면, 아래와 같이 쿠키가 저장된 것을 알 수 있는데,
 
-<img src="Cookie_and_Authentication.assets/image-20210724231652992.png" alt="image-20210724231652992" style="zoom:50%;" />
+<img src="Authentication.assets/image-20210724231652992.png" alt="image-20210724231652992" style="zoom:50%;" />
 
 이 상태에서 [Mozilla](https://developer.mozilla.org/)에 접속해보면 자동으로 뒤에 쿠키 value와 일치하는 `/ko` , `/en-US` 등의 locale 값이 붙는다. 
 
-### Session 쿠키 vs. Permanent 쿠키
+#### Session 쿠키 vs. Permanent 쿠키
 
 쿠키의 라이프타임은 2가지 방법으로 정의된다.
 
@@ -87,11 +89,11 @@ res.writeHead(200, {
 
 브라우저를 종료한 뒤 재시작하면, `permanent_cookie` 를 제외한 쿠키들은 다 삭제되어 있음을 알 수 있다.
 
-### 쿠키 옵션 - Secure & HttpOnly
+#### 쿠키 옵션 - Secure & HttpOnly
 
 보안 관련 옵션인 Secure과 HttpOnly를 알아보자!
 
-#### Secure
+##### Secure
 
 Secure은 웹 브라우저와 웹 서버가 Https를 통해 통신할 경우에만 쿠키를 전송한다는 의미이다.
 
@@ -107,7 +109,7 @@ res.writeHead(200, {
 
 이런 옵션이 필요한 이유는, 세션 ID만 있으면 이를 갈취해서 마치 나인 것처럼 로그인을 하는 보안 이슈가 있을 수 있기 때문! 따라서 암호화된 통신인 https일 경우에만 브라우저에서 서버로 쿠키를 전송하도록 하는 것.
 
-#### HttpOnly
+##### HttpOnly
 
 웹 브라우저와 웹 서버가 통신할 때에만 쿠키를 전송하도록 하는 옵션이다.
 
@@ -125,11 +127,11 @@ HttpOnly 쿠키는 웹 브라우저에서 웹 서버로 전송되기만 할 뿐,
 
 Cross-site 스크립팅 ([XSS (en-US)](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting)) 공격을 방지하기 위한 옵션이다. 대표적으로 서버 쪽에서 지속되어 Javascript를 사용할 필요가 없는 세션 쿠키에서 `HttpOnly` 플래그가 설정된다. 
 
-### 쿠키 옵션 - path & domain
+#### 쿠키 옵션 - path & domain
 
 `Domain` 그리고 `Path` 디렉티브는 **쿠키의 스코프**를 정의한다. 특정 도메인/Path 에서만 쿠키가 살아있게 하고 싶을 때 사용한다.
 
-#### domain
+##### domain
 
 ```javascript
 res.writeHead(200, {
@@ -141,7 +143,7 @@ res.writeHead(200, {
 });
 ```
 
-#### path
+##### path
 
 ```javascript
 res.writeHead(200, {
@@ -179,3 +181,6 @@ res.writeHead(200, {
 
 현실 세계에서는 hash, salt, key stretching 등을 이용해 비밀번호를 암호화한다. 이 작업을 대신 해주는 대표적인 라이브러리엔 PBKDF2, bcrypt 등이 있다.
 
+## 세션과 인증
+
+수업 링크: https://opentutorials.org/course/3400
