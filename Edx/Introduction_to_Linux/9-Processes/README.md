@@ -334,9 +334,7 @@ Load average와 running 프로세스의 갯수를 비교해보면 시스템이 c
 
 `top` 이 터미널에서 정보를 보여주는 동안, 한글자짜리 커맨드를 입력해서 top의 behavior을 변경할 수 있다.
 
-CPU 사용량, 메모리 사용량이 가장 높은 프로세스를 보여주게 하거나, 현재 실행중인 프로세스의 우선순위를 변경하거나, 프로세스를 정지/kill하는 것도 가능하다.
-
- 
+CPU 사용량, 메모리 사용량이 가장 높은 프로세스를 보여주게 하거나, 현재 실행중인 프로세스의 우선순위를 변경하거나, 프로세스를 정지/kill하는 것도 가능하다. 
 
 | **Command** | **Output**                                                |
 | ----------- | --------------------------------------------------------- |
@@ -351,3 +349,65 @@ CPU 사용량, 메모리 사용량이 가장 높은 프로세스를 보여주게
 <img src="image-20210625014228020.png" alt="image-20210625014228020" style="zoom:50%;" />
 
 예를 들어 `k` 를 입력하면 위 사진처럼 kill할 프로세스의 pid를 입력하라는 프롬프트가 뜬다.
+
+##Starting Processes in the future
+
+### Scheduling Future Processes Using at
+
+특정 미래 시점에 task를 수행하고 싶다면 `at` 유틸리티 프로그램을 사용할 수 있다. `at` 으로는 특정 시점에 non-interactive 명령어를 수행할 수 있다. 
+
+```bash
+at now + 2 days # 지금으로부터 2일 이후에 수행되어야 할 task
+at> cat file1.txt # 수행되어야 할 커맨드
+at > <EOT> # CTRL-D로 끝내기
+```
+
+`atq` 로는 현재 스케줄된 태스크를 확인할 수 있다.
+
+### cron
+
+`cron` 은 time-based scheduling 유틸리티 프로그램이다. 특정 시간/일자에 반복되는 routine background jobs를 수행할 수 있다. (Periodic Task)
+
+cron은 `/ect/crontab` (cron table) 에 위치한 설정 파일에 의해 동작하는데, 이 설정 파일은 특정 시점에 실행되어야 하는 shell commands를 포함한다.
+
+#### crontab
+
+`crontab` 파일은 system-wide한 것도 있고, 개별 user-based 인 것도 있다.
+
+각 `crontab` 의 라인은 하나의 job을 의미하고, [CRON expression] 와 [실행할 shell 명령어] 로 구성되어 있다.
+
+```bash
+crontab -e # crontab editor 열기
+```
+
+crontab editor을 통해 기존의 job들을 수정하거나, 새로운 job을 추가할 수 있다. CRON expression은 아래 **6가지** 필드를 포함한다.
+
+| **Field** | **Description** | **Values**                 |
+| --------- | --------------- | -------------------------- |
+| MIN       | Minutes         | 0 to 59                    |
+| HOUR      | Hour field      | 0 to 23                    |
+| DOM       | Day of Month    | 1-31                       |
+| MON       | Month field     | 1-12                       |
+| DOW       | Day Of Week     | 0-6 (0 = Sunday)           |
+| CMD       | Command         | Any command to be executed |
+
+예를 들어, crontab에서 job은 아래와 같이 작성한다.
+
+```bash
+* * * * * /usr/local/bin/execute/this/script.sh # CMD를 제외한 모든 Field가 기본값일 경우 매 달, 매 주, 매 일, 매 시간, 분마다 실행된다.
+30 08 10 06 * /home/sysadmin/full-backup # 6월 10일, 오전 8시 30분에 full-backup을 실행한다.
+```
+
+### sleep
+
+커맨드 또는 job을 연기하거나 미루고 싶을 때 `sleep` 을 사용한다.
+
+default로는 sec 단위(`s`)로 연기하고, min(`m`), hour(`h`), day(`d`) 단위로 연기하는 것도 가능하다. 명시한 시간이 지나거나 interrupting signal이 발생하면 작업이 다시 실행된다.
+
+```bash
+sleep NUMBER[SUFFIX]... # SUFFIX는 s, m, h, d이며 
+```
+
+예를 들어 아래와 같이 작성이 가능하다.
+
+<img src="README.assets/image-20210727222854793.png" alt="image-20210727222854793" style="zoom:50%;" />
